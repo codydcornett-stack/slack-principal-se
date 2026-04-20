@@ -1,0 +1,2219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet" />
+<title>Cody Cornett × Slack — Principal Solution Engineer</title>
+<meta name="description" content="An interactive, Slack-styled application for the Principal Slack Solution Engineer role by Cody Cornett." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ---------- Slack-inspired design system (modernized) ---------- */
+  :root {
+    /* Slack brand — modern palette */
+    --aubergine: #3F0E40;
+    --aubergine-deep: #350D36;
+    --aubergine-hover: #4A154B;
+    --purple: #611F69;
+
+    /* Rail (far-left narrow column) */
+    --rail-bg: #481449;
+    --rail-text: #E6D7E7;
+    --rail-text-dim: #B0A0B2;
+    --rail-hover: rgba(255,255,255,0.08);
+
+    /* Sidebar (light lavender — modern Slack) */
+    --sidebar-bg: #F0E8EC;
+    --sidebar-bg-hover: #E5D9DE;
+    --sidebar-text: #1D1C1D;
+    --sidebar-text-dim: #5D5D5D;
+    --sidebar-active-bg: #1164A3;
+    --sidebar-active-text: #FFFFFF;
+    --sidebar-border: rgba(29,28,29,0.08);
+
+    --white: #FFFFFF;
+    --surface: #FFFFFF;
+    --surface-alt: #F8F8F8;
+    --border: #E8E8E8;
+    --border-strong: #DDDDDD;
+    --text: #1D1C1D;
+    --text-muted: #616061;
+    --text-light: #868686;
+    --link: #1264A3;
+    --link-hover: #0B4C8C;
+    --green: #007A5A;
+    --yellow: #ECB22E;
+    --blue: #36C5F0;
+    --red: #E01E5A;
+    --pill-bg: #F4F4F4;
+    --pill-border: #DCDCDC;
+    --reaction-bg: #EAF4FB;
+    --reaction-border: #B7DAF3;
+    --highlight-bg: #FEF7E0;
+    --divider: #E8E8E8;
+    --channel-text: #1D1C1D;
+
+    --radius-sm: 4px;
+    --radius: 8px;
+    --radius-lg: 12px;
+
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow: 0 4px 12px rgba(0,0,0,0.08);
+
+    --font-sans: "Lato", "Helvetica Neue", Helvetica, "Segoe UI", Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  body {
+    font-family: var(--font-sans);
+    color: var(--text);
+    background: var(--rail-bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 15px;
+    line-height: 1.46;
+  }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; color: var(--link-hover); }
+
+  /* ---------- Top bar (macOS chrome style) ---------- */
+  .topbar {
+    height: 38px;
+    background: var(--rail-bg);
+    color: var(--rail-text);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px;
+    font-size: 12px;
+    border-bottom: 1px solid rgba(0,0,0,0.15);
+    position: relative;
+  }
+  .topbar .traffic {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .topbar .traffic .dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    display: inline-block;
+  }
+  .topbar .traffic .dot.r { background: #FF5F57; }
+  .topbar .traffic .dot.y { background: #FEBC2E; }
+  .topbar .traffic .dot.g { background: #28C840; }
+  .topbar .nav-arrows {
+    display: inline-flex; align-items: center; gap: 4px;
+    color: rgba(255,255,255,0.55); margin-left: 14px;
+  }
+  .topbar .nav-arrows .arrow {
+    width: 22px; height: 22px; border-radius: 4px;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .topbar .nav-arrows .arrow:hover { background: rgba(255,255,255,0.08); }
+  .topbar .nav-arrows svg { width: 14px; height: 14px; }
+  .topbar .clock {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: rgba(255,255,255,0.6);
+    margin-left: 8px;
+  }
+  .topbar .topbar-right {
+    display: flex; align-items: center; gap: 10px;
+    color: var(--rail-text-dim);
+    font-size: 12px;
+  }
+  .topbar .mobile-nav-toggle { display: none; }
+
+  /* ---------- App grid (rail + sidebar + main) ---------- */
+  .workspace {
+    display: grid;
+    grid-template-columns: 68px 260px 1fr;
+    height: calc(100vh - 38px);
+    background: var(--surface);
+  }
+
+  /* ---------- Icon rail (far left) ---------- */
+  .rail {
+    background: var(--rail-bg);
+    color: var(--rail-text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0 12px;
+    gap: 2px;
+    position: relative;
+  }
+  .rail .ws-logo {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: conic-gradient(from 0deg, #ECB22E 0 25%, #2EB67D 25% 50%, #36C5F0 50% 75%, #E01E5A 75% 100%);
+    position: relative;
+    margin-bottom: 10px;
+    box-shadow: inset 0 0 0 5px var(--rail-bg);
+  }
+  .rail .ws-logo::after {
+    content: "";
+    position: absolute;
+    top: -2px; right: -2px;
+    width: 14px; height: 14px;
+    background: #CD2553;
+    border-radius: 50%;
+    border: 2px solid var(--rail-bg);
+    font-size: 9px; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .rail .rail-btn {
+    width: 48px;
+    padding: 6px 0 4px;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 2px;
+    color: var(--rail-text);
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 700;
+    transition: background 120ms ease;
+    position: relative;
+  }
+  .rail .rail-btn:hover { background: var(--rail-hover); }
+  .rail .rail-btn.active { background: rgba(255,255,255,0.12); color: #fff; }
+  .rail .rail-btn .rico {
+    width: 32px; height: 32px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 1.5px solid currentColor;
+    border-radius: 8px;
+    color: #fff;
+  }
+  .rail .rail-btn.active .rico {
+    background: rgba(255,255,255,0.12);
+  }
+  .rail .rail-btn .rico svg { width: 18px; height: 18px; }
+  .rail .rail-btn .rlabel { color: #fff; font-weight: 700; }
+  .rail .rail-btn .rbadge {
+    position: absolute; top: 2px; right: 6px;
+    background: #CD2553; color: #fff;
+    font-size: 9px; font-weight: 800;
+    border-radius: 9px;
+    min-width: 14px; height: 14px;
+    padding: 0 4px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 1.5px solid var(--rail-bg);
+  }
+  .rail .rail-spacer { flex: 1; }
+  .rail .rail-bottom {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  .rail .rail-round {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(255,255,255,0.10);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #fff; cursor: pointer;
+    border: none;
+  }
+  .rail .rail-round:hover { background: rgba(255,255,255,0.18); }
+  .rail .rail-round svg { width: 16px; height: 16px; }
+  .rail .rail-me {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: linear-gradient(135deg, #4A154B, #611F69) center/cover no-repeat;
+    color: #fff; font-weight: 900; font-size: 13px;
+    display: inline-flex; align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+    border: none;
+  }
+  .rail .rail-me img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
+  .rail .rail-me::after {
+    content: "";
+    position: absolute;
+    bottom: -1px; right: -1px;
+    width: 10px; height: 10px;
+    background: #2BAC76;
+    border: 2px solid var(--rail-bg);
+    border-radius: 50%;
+  }
+
+  /* ---------- Sidebar (modern light lavender) ---------- */
+  .sidebar {
+    background: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    overflow-y: auto;
+    padding: 6px 0 20px;
+    border-right: 1px solid var(--sidebar-border);
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar .ws-head {
+    padding: 10px 14px 10px 18px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px;
+  }
+  .sidebar .ws-head .ws-switch {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 18px; font-weight: 900; color: var(--sidebar-text);
+    letter-spacing: -0.2px;
+    cursor: pointer;
+  }
+  .sidebar .ws-head .ws-switch svg { width: 14px; height: 14px; }
+  .sidebar .ws-head .filter {
+    width: 28px; height: 28px; border-radius: 6px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--sidebar-text-dim); cursor: pointer;
+  }
+  .sidebar .ws-head .filter:hover { background: var(--sidebar-bg-hover); }
+  .sidebar .ws-head .filter svg { width: 16px; height: 16px; }
+
+  .sidebar .quick-nav {
+    padding: 4px 8px 10px;
+    border-bottom: 1px solid var(--sidebar-border);
+    margin-bottom: 6px;
+  }
+  .sidebar .quick-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 6px 10px;
+    color: var(--sidebar-text);
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .sidebar .quick-item:hover { background: var(--sidebar-bg-hover); }
+  .sidebar .quick-item svg { width: 16px; height: 16px; color: var(--sidebar-text-dim); }
+  .sidebar .quick-item .qbadge {
+    margin-left: auto;
+    background: #CD2553; color: #fff;
+    font-size: 11px; font-weight: 800;
+    border-radius: 10px; padding: 1px 7px;
+  }
+
+  .sidebar .section {
+    margin-top: 6px;
+    padding: 0 4px;
+  }
+  .sidebar .section-label {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 12px 4px;
+    font-size: 13px; color: var(--sidebar-text-dim);
+    font-weight: 700;
+    letter-spacing: 0.1px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .sidebar .section-label:hover { color: var(--sidebar-text); }
+  .sidebar .section-label .chev {
+    font-size: 9px; opacity: 0.8;
+    width: 12px; display: inline-flex; justify-content: center;
+  }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 5px 12px;
+    color: var(--sidebar-text);
+    cursor: pointer;
+    font-size: 15px;
+    user-select: none;
+    border: none; background: transparent; width: 100%;
+    text-align: left;
+    font-family: var(--font-sans);
+    line-height: 1.3;
+    border-radius: 6px;
+  }
+  .nav-item:hover { background: var(--sidebar-bg-hover); color: var(--sidebar-text); }
+  .nav-item.active {
+    background: var(--sidebar-active-bg);
+    color: var(--sidebar-active-text);
+    font-weight: 700;
+  }
+  .nav-item .hash { color: var(--sidebar-text-dim); font-weight: 300; }
+  .nav-item.active .hash { color: #fff; }
+  .nav-item .emoji { width: 18px; text-align: center; }
+  .nav-item .badge {
+    margin-left: auto;
+    background: #CD2553;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 1px 7px;
+  }
+
+  .dm-avatar {
+    width: 20px; height: 20px; border-radius: 4px;
+    background: linear-gradient(135deg, #4A154B, #E01E5A) center/cover no-repeat;
+    color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 900;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .dm-avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
+
+  /* ---------- Main ---------- */
+  .main {
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .channel-header {
+    border-bottom: 1px solid var(--border);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 56px;
+  }
+  .channel-header .chan-main { display: flex; flex-direction: column; }
+  .channel-header .chan-title {
+    font-size: 18px; font-weight: 900; color: var(--text);
+    display: inline-flex; align-items: center; gap: 4px;
+    cursor: pointer;
+    padding: 2px 6px 2px 0;
+    border-radius: 4px;
+  }
+  .channel-header .chan-title:hover { background: var(--surface-alt); }
+  .channel-header .chan-title .hash { color: var(--text); font-weight: 900; }
+  .channel-header .chan-title .caret {
+    font-size: 10px; color: var(--text-muted); margin-left: 2px;
+  }
+  .channel-header .chan-topic {
+    color: var(--text-muted); font-size: 13px;
+    padding-left: 2px;
+  }
+  .channel-header .chan-actions {
+    margin-left: auto; display: flex; align-items: center; gap: 10px;
+  }
+  .huddle-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 10px 5px 8px;
+    background: #fff;
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    font-size: 13px; font-weight: 700; color: var(--text);
+    cursor: pointer;
+    font-family: var(--font-sans);
+  }
+  .huddle-btn:hover { background: var(--surface-alt); }
+  .huddle-btn svg { width: 16px; height: 16px; color: var(--text-muted); }
+  .huddle-btn .huddle-caret {
+    border-left: 1px solid var(--border);
+    padding-left: 6px; margin-left: 2px;
+    color: var(--text-muted); font-size: 10px;
+  }
+  .member-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 8px 4px 4px;
+    background: #fff;
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px; font-weight: 700; color: var(--text);
+  }
+  .member-btn:hover { background: var(--surface-alt); }
+  .members-stack { display: inline-flex; }
+  .members-stack .m {
+    width: 22px; height: 22px; border-radius: 4px;
+    margin-left: -5px; border: 2px solid var(--white);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 900; color: #fff;
+    overflow: hidden;
+    position: relative;
+  }
+  .members-stack .m:first-child { margin-left: 0; }
+  .members-stack .m img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .canvas-btn {
+    width: 30px; height: 30px; border-radius: 6px;
+    background: #fff;
+    border: 1px solid var(--border-strong);
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: var(--text-muted);
+  }
+  .canvas-btn:hover { background: var(--surface-alt); }
+  .canvas-btn svg { width: 16px; height: 16px; }
+
+  /* Pinned banner */
+  .pinned-banner {
+    background: #FBF8F1;
+    border-bottom: 1px solid var(--border);
+    padding: 10px 24px;
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .pinned-banner strong { color: var(--text); font-weight: 700; }
+  .pinned-banner .pin-icon { color: var(--yellow); }
+
+  /* Messages scroll region */
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px 24px;
+    scroll-behavior: smooth;
+  }
+
+  .day-divider {
+    display: flex; align-items: center;
+    color: var(--text-muted);
+    font-size: 12px; font-weight: 700;
+    margin: 20px 0 12px;
+    gap: 12px;
+  }
+  .day-divider::before, .day-divider::after {
+    content: ""; flex: 1; height: 1px; background: var(--border);
+  }
+  .day-divider .chip {
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3px 12px;
+    background: var(--white);
+  }
+
+  /* Message */
+  .msg {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 10px;
+    padding: 8px 8px 8px 8px;
+    border-radius: 6px;
+    margin: 2px 0;
+    transition: background 120ms ease;
+    position: relative;
+  }
+  .msg:hover { background: #F8F8F8; }
+  .msg:hover .msg-actions { opacity: 1; transform: translateY(0); }
+
+  .msg .avatar {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #611F69, #E01E5A);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 14px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .msg .avatar img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+  }
+  .msg .avatar.slack { background: linear-gradient(135deg, #36C5F0, #2EB67D); }
+  .msg .avatar.bot { background: linear-gradient(135deg, #ECB22E, #E01E5A); }
+  .msg .avatar.you { background: linear-gradient(135deg, #4A154B, #611F69); }
+  .msg .avatar.panel { background: linear-gradient(135deg, #007A5A, #36C5F0); }
+
+  .msg .avatar .presence {
+    position: absolute; bottom: -1px; right: -1px;
+    width: 12px; height: 12px; background: #2BAC76;
+    border: 2px solid #fff; border-radius: 50%;
+    z-index: 2;
+  }
+
+  .msg-body .header {
+    display: flex; align-items: baseline; gap: 8px;
+    margin-bottom: 3px;
+  }
+  .msg-body .name {
+    font-weight: 900; font-size: 15px; color: var(--text);
+  }
+  .msg-body .badge-pill {
+    font-size: 10px; font-weight: 700;
+    padding: 1px 6px; border-radius: 3px;
+    background: var(--text); color: #fff;
+    text-transform: uppercase; letter-spacing: 0.3px;
+  }
+  .msg-body .badge-pill.app { background: #616061; }
+  .msg-body .time {
+    font-size: 12px; color: var(--text-light);
+  }
+  .msg-body .text {
+    font-size: 15px; line-height: 1.48; color: var(--text);
+  }
+  .msg-body .text p { margin: 0 0 6px; }
+  .msg-body .text p:last-child { margin-bottom: 0; }
+  .msg-body .text strong { font-weight: 700; }
+  .msg-body .text em { color: var(--text-muted); }
+  .msg-body .text code {
+    background: #F4EDE4; padding: 1px 5px;
+    font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
+    font-size: 12.5px; color: #E01E5A; border-radius: 3px;
+    border: 1px solid #E8DFD3;
+  }
+  .msg-body .text blockquote {
+    border-left: 4px solid #DDDDDD; padding: 2px 0 2px 12px;
+    color: var(--text-muted); margin: 6px 0;
+  }
+  .msg-body .text ul { margin: 6px 0 6px 22px; padding: 0; }
+  .msg-body .text li { margin: 2px 0; }
+
+  /* Reactions */
+  .reactions {
+    display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px;
+  }
+  .reaction {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--pill-bg);
+    border: 1px solid var(--pill-border);
+    color: var(--text-muted);
+    padding: 2px 7px; border-radius: 12px;
+    font-size: 12px; font-weight: 700;
+    cursor: pointer;
+    transition: all 120ms ease;
+    font-family: var(--font-sans);
+  }
+  .reaction:hover { background: #fff; border-color: var(--blue); color: var(--link); }
+  .reaction.mine { background: var(--reaction-bg); border-color: var(--reaction-border); color: var(--link); }
+  .reaction .emo { font-size: 14px; }
+
+  /* Scorecard cards inside messages */
+  .scorecard {
+    margin-top: 8px;
+    border: 1px solid var(--border-strong);
+    border-left: 4px solid var(--green);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #fff;
+    max-width: 720px;
+  }
+  .scorecard .card-head {
+    padding: 12px 14px;
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .scorecard .card-head:hover { background: #F8F8F8; }
+  .scorecard .req {
+    font-size: 13px; color: var(--text-muted); font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.4px;
+    margin-bottom: 4px;
+  }
+  .scorecard .req-text {
+    font-size: 15px; color: var(--text); font-weight: 700;
+  }
+  .scorecard .match-badge {
+    flex-shrink: 0;
+    background: #E3F4EC;
+    color: var(--green);
+    border: 1px solid #B9E4D0;
+    border-radius: 14px;
+    padding: 3px 10px;
+    font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; gap: 5px;
+    white-space: nowrap;
+  }
+  .scorecard .toggle {
+    display: inline-block;
+    margin-left: 4px;
+    color: var(--text-muted);
+    transition: transform 150ms ease;
+  }
+  .scorecard.open .toggle { transform: rotate(90deg); }
+  .scorecard .card-body {
+    display: none;
+    padding: 4px 14px 14px 14px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text);
+  }
+  .scorecard.open .card-body { display: block; }
+  .scorecard .card-body p { margin: 10px 0; }
+  .scorecard .card-body ul { margin: 8px 0 8px 20px; padding: 0; }
+  .scorecard .card-body li { margin: 4px 0; }
+  .scorecard .card-body .evidence {
+    display: grid; gap: 6px;
+    margin-top: 10px;
+  }
+  .scorecard .card-body .ev {
+    background: var(--surface-alt);
+    padding: 8px 10px; border-radius: 6px;
+    border-left: 3px solid var(--blue);
+    font-size: 13px;
+  }
+
+  /* KPI big stat cards */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+    max-width: 820px;
+  }
+  .stat-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    transition: all 150ms ease;
+  }
+  .stat-card:hover { border-color: var(--blue); transform: translateY(-1px); box-shadow: var(--shadow); }
+  .stat-card .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }
+  .stat-card .stat-value {
+    font-size: 26px; font-weight: 900; color: var(--text);
+    margin: 4px 0 2px;
+    letter-spacing: -0.5px;
+  }
+  .stat-card .stat-sub { font-size: 13px; color: var(--text-muted); }
+  .stat-card.green { border-left: 4px solid var(--green); }
+  .stat-card.purple { border-left: 4px solid var(--purple); }
+  .stat-card.blue { border-left: 4px solid var(--blue); }
+  .stat-card.red { border-left: 4px solid var(--red); }
+  .stat-card.yellow { border-left: 4px solid var(--yellow); }
+
+  /* Canvas-style banner block */
+  .canvas {
+    margin-top: 8px;
+    background: linear-gradient(135deg, #4A154B 0%, #611F69 100%);
+    color: #fff;
+    border-radius: var(--radius-lg);
+    padding: 20px 24px;
+    max-width: 720px;
+  }
+  .canvas .canvas-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .canvas h2 { font-size: 22px; font-weight: 900; margin: 0 0 8px; line-height: 1.25; }
+  .canvas p { margin: 0 0 8px; font-size: 15px; line-height: 1.5; opacity: 0.95; }
+  .canvas .canvas-cta {
+    display: inline-block; margin-top: 8px;
+    background: #fff; color: var(--purple);
+    padding: 8px 16px; border-radius: 6px;
+    font-weight: 900; font-size: 14px;
+  }
+
+  /* Thread reply */
+  .thread-replies {
+    margin-top: 4px;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--link); font-weight: 700; font-size: 13px;
+    border: 1px solid transparent;
+  }
+  .thread-replies:hover { background: #fff; border-color: var(--border); text-decoration: none; }
+  .thread-replies .reply-count { color: var(--link); }
+  .thread-replies .reply-preview { color: var(--text-muted); font-weight: 400; }
+  .thread-replies .avatars { display: inline-flex; }
+  .thread-replies .avatars .a {
+    width: 20px; height: 20px; border-radius: 4px;
+    margin-left: -4px; border: 2px solid #fff;
+  }
+  .thread-replies .avatars .a:first-child { margin-left: 0; }
+
+  /* Message composer (modern Slack style) */
+  .composer {
+    padding: 8px 20px 18px;
+    background: var(--white);
+  }
+  .composer .box {
+    border: 1px solid #BABBBD;
+    border-radius: var(--radius);
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+  }
+  .composer .box:hover { border-color: #868686; }
+  .composer .format-bar {
+    display: flex; align-items: center;
+    padding: 4px 8px;
+    border-bottom: 1px solid var(--border);
+    gap: 2px;
+    color: var(--text-muted);
+  }
+  .composer .format-bar .fi {
+    width: 28px; height: 26px; border-radius: 4px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    cursor: pointer;
+  }
+  .composer .format-bar .fi:hover { background: #F0F0F0; }
+  .composer .format-bar .sep { width: 1px; height: 16px; background: var(--border); margin: 0 4px; }
+  .composer .compose-input {
+    padding: 10px 12px;
+    min-height: 22px;
+    font-size: 14px;
+    color: var(--text-light);
+    cursor: text;
+  }
+  .composer .compose-input .hint { color: var(--text-light); }
+  .composer .action-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 4px 6px 4px 8px;
+  }
+  .composer .action-bar .left,
+  .composer .action-bar .right {
+    display: flex; align-items: center; gap: 2px;
+  }
+  .composer .action-bar .ai {
+    width: 30px; height: 30px; border-radius: 6px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+  .composer .action-bar .ai:hover { background: #F0F0F0; }
+  .composer .action-bar .ai svg { width: 18px; height: 18px; }
+  .composer .action-bar .send {
+    width: 30px; height: 30px; border-radius: 6px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--text-light);
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: #fff;
+  }
+  .composer .action-bar .send svg { width: 14px; height: 14px; }
+  .composer .action-bar .send-caret {
+    width: 20px; height: 30px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--text-light);
+    font-size: 10px;
+    cursor: pointer;
+  }
+
+  /* Contact card (DM channel) */
+  .contact-card {
+    display: grid; gap: 12px;
+    margin-top: 10px;
+    max-width: 520px;
+  }
+  .contact-card .row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: #fff;
+    transition: all 120ms ease;
+  }
+  .contact-card .row:hover { border-color: var(--blue); box-shadow: var(--shadow-sm); }
+  .contact-card .row .ico {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: #F4F4F4;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .contact-card .row .label { font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; }
+  .contact-card .row .value { font-size: 15px; font-weight: 700; color: var(--text); }
+  .contact-card .row a { color: var(--text); }
+  .contact-card .row a:hover { color: var(--link); text-decoration: none; }
+
+  /* Info callout */
+  .callout {
+    border: 1px solid #DDE9F5;
+    background: #EAF3FB;
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-size: 13.5px;
+    color: var(--link-hover);
+    margin-top: 8px;
+    max-width: 680px;
+  }
+  .callout.warn { background: #FFF8E6; border-color: #F2D58B; color: #7A6007; }
+
+  /* Sections inside canvas for extended reads */
+  .rich-block {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-top: 8px;
+    max-width: 720px;
+  }
+  .rich-block h3 {
+    font-size: 15px; margin: 0 0 6px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .rich-block h3 .pin { color: var(--yellow); }
+  .rich-block p { margin: 0 0 8px; font-size: 14px; line-height: 1.5; }
+  .rich-block p:last-child { margin-bottom: 0; }
+
+  /* Typing indicator */
+  .typing {
+    display: flex; align-items: center; gap: 6px;
+    color: var(--text-muted); font-size: 12px;
+    padding: 6px 24px;
+    height: 24px;
+  }
+  .typing .dots { display: inline-flex; gap: 2px; }
+  .typing .dots span {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--text-muted);
+    animation: bounce 1.2s infinite ease-in-out;
+  }
+  .typing .dots span:nth-child(2) { animation-delay: 150ms; }
+  .typing .dots span:nth-child(3) { animation-delay: 300ms; }
+  @keyframes bounce {
+    0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+    40% { transform: translateY(-3px); opacity: 1; }
+  }
+
+  /* Hidden by default; shown by JS */
+  .channel-view { display: none; }
+  .channel-view.active { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+
+  /* Mobile helpers (hidden on desktop) */
+  .mobile-topbar { display: none; }
+  .mobile-bottom-nav { display: none; }
+
+  /* Responsive — mobile pattern matches Slack mobile:
+     - sidebar = full-screen default view
+     - tap channel -> channel view with back arrow at top
+     - persistent bottom nav (Home / DMs / Activity / More) */
+  @media (max-width: 860px) {
+    html, body { overflow: hidden; }
+    .topbar { display: none; }
+    .workspace {
+      grid-template-columns: 1fr;
+      height: 100vh;
+      position: relative;
+    }
+    .rail { display: none; }
+
+    /* Sidebar fills the screen on mobile (default view) */
+    .sidebar {
+      display: flex;
+      width: 100%;
+      height: 100vh;
+      padding-bottom: 60px; /* room for bottom nav */
+      box-sizing: border-box;
+    }
+    .sidebar .ws-head { padding-top: 18px; }
+
+    /* Main hidden by default on mobile; shown when body.m-channel */
+    .main {
+      display: none;
+      position: absolute;
+      left: 0; top: 0; right: 0; bottom: 0;
+      background: var(--surface);
+      padding-top: 52px;   /* space for mobile topbar */
+      padding-bottom: 60px;/* space for bottom nav */
+      box-sizing: border-box;
+    }
+    body.m-channel .sidebar { display: none; }
+    body.m-channel .main { display: flex; flex-direction: column; }
+    body.m-channel .mobile-topbar { display: flex; }
+
+    /* Hide the desktop channel-header on mobile (we use mobile-topbar) */
+    .channel-header { display: none; }
+    .pinned-banner { border-top: 0; }
+
+    .mobile-bottom-nav { display: flex; }
+  }
+
+  /* Mobile top bar shown only when viewing a channel on mobile */
+  .mobile-topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 52px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    padding: 0 10px; gap: 8px;
+    z-index: 50;
+  }
+  .mobile-topbar .back {
+    background: none; border: 0; padding: 8px;
+    color: var(--text); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 6px;
+  }
+  .mobile-topbar .back:active { background: var(--hover); }
+  .mobile-topbar .chan-name-wrap {
+    flex: 1; display: flex; flex-direction: column; justify-content: center;
+    line-height: 1.2;
+  }
+  .mobile-topbar .chan-name {
+    font-weight: 800; font-size: 15px; color: var(--text);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .mobile-topbar .chan-sub {
+    font-size: 11px; color: var(--text-dim); font-weight: 400;
+  }
+  .mobile-topbar .huddle-mobile {
+    background: none; border: 0; padding: 8px;
+    color: var(--text-dim); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 6px;
+  }
+
+  /* Mobile bottom nav (always visible on mobile) */
+  .mobile-bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 60px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    z-index: 50;
+    align-items: stretch;
+    justify-content: space-around;
+  }
+  .mbn-item {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 3px;
+    background: none; border: 0;
+    color: var(--text-dim);
+    font-size: 11px; font-weight: 600;
+    padding: 6px 4px;
+    cursor: pointer;
+  }
+  .mbn-item.active { color: var(--purple); }
+  .mbn-item svg { width: 22px; height: 22px; }
+  .mobile-nav-toggle {
+    display: none;
+    background: rgba(255,255,255,0.08);
+    color: #fff; border: 0;
+    border-radius: 6px; width: 34px; height: 28px;
+    align-items: center; justify-content: center;
+    cursor: pointer;
+    margin-right: 4px;
+  }
+
+  /* Subtle enter animation for channel switches */
+  .messages .msg, .messages .day-divider {
+    animation: msg-in 220ms ease;
+  }
+  @keyframes msg-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Focus rings */
+  button:focus-visible, .nav-item:focus-visible, .scorecard .card-head:focus-visible {
+    outline: 2px solid var(--blue); outline-offset: 1px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar" role="banner">
+  <div class="traffic" aria-hidden="true">
+    <span class="dot r"></span>
+    <span class="dot y"></span>
+    <span class="dot g"></span>
+  </div>
+  <div class="nav-arrows">
+    <span class="arrow" aria-label="Clock">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    </span>
+    <span class="arrow" aria-label="Back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    </span>
+    <span class="arrow" aria-label="Forward">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </span>
+  </div>
+  <div class="topbar-right">
+    <span>Apr 2026</span>
+  </div>
+</div>
+
+<div class="workspace">
+  <!-- Icon rail (far left) -->
+  <aside class="rail" aria-label="App navigation">
+    <button class="ws-logo" aria-label="Cody × Slack workspace"></button>
+    <button class="rail-btn active" aria-label="Home">
+      <span class="rico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1V9.5z"/></svg>
+      </span>
+      <span class="rlabel">Home</span>
+    </button>
+    <button class="rail-btn" aria-label="Direct messages">
+      <span class="rico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </span>
+      <span class="rlabel">DMs</span>
+      <span class="rbadge">1</span>
+    </button>
+    <button class="rail-btn" aria-label="Activity">
+      <span class="rico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </span>
+      <span class="rlabel">Activity</span>
+    </button>
+    <button class="rail-btn" aria-label="Later">
+      <span class="rico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      </span>
+      <span class="rlabel">Later</span>
+    </button>
+    <button class="rail-btn" aria-label="More">
+      <span class="rico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+      </span>
+      <span class="rlabel">More</span>
+    </button>
+    <div class="rail-spacer"></div>
+    <div class="rail-bottom">
+      <button class="rail-round" aria-label="Create new">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <button class="rail-round" aria-label="Huddles">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v-3a9 9 0 0 1 18 0v3"/><path d="M21 16v1a2 2 0 0 1-2 2h-1v-5h1a2 2 0 0 1 2 2zM3 16v1a2 2 0 0 0 2 2h1v-5H5a2 2 0 0 0-2 2z"/></svg>
+      </button>
+      <button class="rail-me" aria-label="Your profile">
+        <img src="cody.jpg" alt="" onerror="this.remove()" />
+        <span>CC</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar" aria-label="Channels">
+    <div class="ws-head">
+      <div class="ws-switch">
+        Home
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="filter" aria-label="Filter">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
+      </div>
+    </div>
+
+    <div class="quick-nav">
+      <div class="quick-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"/></svg>
+        Unreads
+      </div>
+      <div class="quick-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Threads
+      </div>
+      <div class="quick-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Drafts &amp; sent
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span class="chev">▾</span> Channels</div>
+      <button class="nav-item active" data-channel="welcome">
+        <span class="hash">#</span> welcome
+      </button>
+      <button class="nav-item" data-channel="role-fit">
+        <span class="hash">#</span> role-fit
+        <span class="badge">9</span>
+      </button>
+      <button class="nav-item" data-channel="why-slack">
+        <span class="hash">#</span> why-slack
+      </button>
+      <button class="nav-item" data-channel="track-record">
+        <span class="hash">#</span> track-record
+      </button>
+      <button class="nav-item" data-channel="ai-fluency">
+        <span class="hash">#</span> ai-fluency
+      </button>
+      <button class="nav-item" data-channel="proof-of-craft">
+        <span class="hash">#</span> proof-of-craft
+      </button>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span class="chev">▾</span> Direct messages</div>
+      <button class="nav-item" data-channel="dm-cody">
+        <span class="dm-avatar"><img src="cody.jpg" alt="" onerror="this.remove()" />CC</span> Cody Cornett <span style="color:var(--sidebar-text-dim);font-size:12px;margin-left:2px;">(you)</span>
+      </button>
+    </div>
+
+    <div class="section">
+      <div class="section-label"><span class="chev">▾</span> Apps</div>
+      <button class="nav-item" style="cursor:default;">
+        <span class="emoji">🤖</span> Slackbot
+      </button>
+      <button class="nav-item" style="cursor:default;">
+        <span class="emoji">🟠</span> Claude
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- ========== WELCOME ========== -->
+    <section class="channel-view active" data-channel="welcome" aria-label="welcome channel">
+      <div class="channel-header">
+        <div class="chan-main">
+          <div class="chan-title"><span class="hash">#</span>welcome<span class="caret">▾</span></div>
+          <div class="chan-topic">Start here — a 30-second tour of why Cody is the right fit for Principal Slack SE.</div>
+        </div>
+        <div class="chan-actions">
+          <button class="huddle-btn" aria-label="Start huddle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v-3a9 9 0 0 1 18 0v3"/><path d="M21 16v1a2 2 0 0 1-2 2h-1v-5h1a2 2 0 0 1 2 2zM3 16v1a2 2 0 0 0 2 2h1v-5H5a2 2 0 0 0-2 2z"/></svg>
+            Huddle
+            <span class="huddle-caret">▾</span>
+          </button>
+          <button class="member-btn" aria-label="3 members">
+            <span class="members-stack">
+              <span class="m" style="background:linear-gradient(135deg,#4A154B,#611F69);"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</span>
+              <span class="m" style="background:linear-gradient(135deg,#007A5A,#36C5F0);">HM</span>
+              <span class="m" style="background:linear-gradient(135deg,#ECB22E,#E01E5A);">🫱</span>
+            </span>
+            <span>3</span>
+          </button>
+          <button class="canvas-btn" aria-label="Canvas">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="pinned-banner">
+        <span class="pin-icon">📌</span>
+        <span><strong>2 pinned</strong> — 30-second pitch and how to navigate this workspace</span>
+      </div>
+      <div class="messages" id="msgs-welcome">
+
+        <div class="day-divider"><span class="chip">Today</span></div>
+
+        <!-- 30-second intro -->
+        <div class="msg">
+          <div class="avatar you"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC<span class="presence"></span></div>
+          <div class="msg-body">
+            <div class="header">
+              <span class="name">Cody Cornett</span>
+              <span class="time">9:02 AM</span>
+            </div>
+            <div class="text">
+              <p>👋 Welcome to the workspace — thanks for being here.</p>
+              <p>This is my application for the <strong>Principal Slack Solution Engineer</strong> role, delivered the way I'd want a prospect to experience a solution: inside the product, in their context, with the story structured around what matters to them.</p>
+              <p>Have a look around at your own pace. Each channel maps to a question you're probably asking.</p>
+            </div>
+            <div class="reactions">
+              <span class="reaction mine"><span class="emo">👋</span> 3</span>
+              <span class="reaction"><span class="emo">✨</span> 2</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pinned 30-sec pitch canvas -->
+        <div class="msg">
+          <div class="avatar you"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</div>
+          <div class="msg-body">
+            <div class="header">
+              <span class="name">Cody Cornett</span>
+              <span class="time">9:03 AM</span>
+              <span class="time">📌 pinned</span>
+            </div>
+            <div class="text">
+              <div class="canvas">
+                <div class="canvas-title">📌 The 30-second pitch</div>
+                <h2>A decade of enterprise SE craft. President's Club. Multiple Enterprise Team MVPs.</h2>
+                <p>I'm an <strong>enterprise Solutions Engineer with 10+ years of SaaS presales experience</strong>. Five of those years at <strong>Sprout Social</strong> as Enterprise → Lead SE — the SE AEs asked for on their most strategic deals, contributor to the $30M→$100M→$200M ARR climb and IPO, Demo2Win and Great Demo certified.</p>
+                <p>I then moved into presales leadership at <strong>SOCi</strong>, but <em>stayed close to the craft</em> — personally running the most complex deals, owning the hardest security and architecture conversations, and enabling the team for SOCi's <strong>first agentic AI product launch</strong>.</p>
+                <p>I'm making a deliberate return to full-time IC work at Slack because AI is the biggest platform shift of my career, and I want to earn front-line expertise in the Agentforce / Agentic OS motion — the most important enterprise software story of the next five years.</p>
+                <span class="canvas-cta">Open <strong style="color:var(--purple)">#role-fit</strong> for the proof →</span>
+              </div>
+            </div>
+            <div class="reactions">
+              <span class="reaction"><span class="emo">🎯</span> 2</span>
+              <span class="reaction"><span class="emo">🔥</span> 1</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- How to navigate -->
+        <div class="msg">
+          <div class="avatar slack">💬</div>
+          <div class="msg-body">
+            <div class="header">
+              <span class="name">Slackbot</span>
+              <span class="badge-pill app">App</span>
+              <span class="time">9:05 AM</span>
+            </div>
+            <div class="text">
+              <p>Here's how to get the most out of this workspace:</p>
+              <div class="rich-block">
+                <h3>📋 Suggested reading order</h3>
+                <p><strong>1. <a href="#" onclick="switchChannel('role-fit'); return false;">#role-fit</a></strong> — Every bullet on the JD, mapped to Cody's receipts. Click any card to expand.</p>
+                <p><strong>2. <a href="#" onclick="switchChannel('why-slack'); return false;">#why-slack</a></strong> — Why the Agentic OS is the platform shift, and why Cody's stepping back to IC to live it.</p>
+                <p><strong>3. <a href="#" onclick="switchChannel('track-record');return false;">#track-record</a></strong> — The numbers behind the story.</p>
+                <p><strong>4. <a href="#" onclick="switchChannel('ai-fluency'); return false;">#ai-fluency</a></strong> — Proof Cody can hold the technical conversation with modern IT buyers.</p>
+                <p><strong>5. <a href="#" onclick="switchChannel('proof-of-craft'); return false;">#proof-of-craft</a></strong> — How this page was built, and what it demonstrates.</p>
+                <p><strong>6. <a href="#" onclick="switchChannel('dm-cody'); return false;">Cody Cornett (DM)</a></strong> — Contact info when you're ready.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="composer">
+        <div class="box">
+          <div class="compose-input"><span class="hint">Message #welcome</span></div>
+          <div class="action-bar">
+            <div class="left">
+              <span class="ai" title="Add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+              <span class="ai" title="Video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></span>
+              <span class="ai" title="Audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
+            </div>
+            <div class="right">
+              <span class="ai" title="Emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>
+              <span class="ai" title="Mention">@</span>
+              <span class="ai" title="Formatting" style="font-weight:900;">Aa</span>
+              <span class="send" title="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span>
+              <span class="send-caret">▾</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== ROLE FIT ========== -->
+    <section class="channel-view" data-channel="role-fit" aria-label="role-fit channel">
+      <div class="channel-header">
+        <div class="chan-main">
+          <div class="chan-title"><span class="hash">#</span>role-fit<span class="caret">▾</span></div>
+          <div class="chan-topic">Every JD requirement × how Cody meets it. Click any card to expand the receipts.</div>
+        </div>
+        <div class="chan-actions">
+          <button class="huddle-btn" aria-label="Start huddle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v-3a9 9 0 0 1 18 0v3"/><path d="M21 16v1a2 2 0 0 1-2 2h-1v-5h1a2 2 0 0 1 2 2zM3 16v1a2 2 0 0 0 2 2h1v-5H5a2 2 0 0 0-2 2z"/></svg>
+            Huddle
+            <span class="huddle-caret">▾</span>
+          </button>
+          <button class="member-btn" aria-label="3 members">
+            <span class="members-stack">
+              <span class="m" style="background:linear-gradient(135deg,#4A154B,#611F69);"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</span>
+              <span class="m" style="background:linear-gradient(135deg,#007A5A,#36C5F0);">HM</span>
+              <span class="m" style="background:linear-gradient(135deg,#ECB22E,#E01E5A);">🫱</span>
+            </span>
+            <span>3</span>
+          </button>
+          <button class="canvas-btn" aria-label="Canvas">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="pinned-banner">
+        <span class="pin-icon">📌</span>
+        <span><strong>9 requirements</strong> · 9 matches · click any card to see evidence</span>
+      </div>
+      <div class="messages" id="msgs-role-fit">
+        <div class="day-divider"><span class="chip">Role-fit scorecard</span></div>
+
+        <div class="msg">
+          <div class="avatar you"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</div>
+          <div class="msg-body">
+            <div class="header">
+              <span class="name">Cody Cornett</span>
+              <span class="time">8:30 AM</span>
+            </div>
+            <div class="text">
+              <p>I read the JD line by line and mapped my last decade against it. Click any card to expand.</p>
+            </div>
+
+            <!-- Scorecard cards -->
+            <div class="scorecard" data-sc>
+              <div class="card-head" tabindex="0" role="button" aria-expanded="false">
+                <div>
+                  <div class="req">JD · Core responsibility</div>
+                  <div class="req-text">Partner with AEs on complex, multi-stakeholder deal cycles across industries <span class="toggle">›</span></div>
+                </div>
+                <span class="match-badge">✓ Strong match</span>
+              </div>
+              <div class="card-body">
+                <p>This is the work I've done personally for a decade — in the seat, on the deal, not from the sidelines.</p>
+                <ul>
+                  <li>Five years as an Enterprise / Lead SE at <strong>Sprout Social</strong>, partnering with AEs on the company's largest, most strategic opportunities — winning <strong>President's Club</strong> and multiple <strong>Enterprise Team MVPs</strong>, and leading the team in ARR, win rate, and average deal size.</li>
+                  <li>Won complex, multi-stakeholder cycles across <strong>financial services, retail, restaurants, franchise, healthcare, automotive, and multi-location enterprise</strong>.</li>
+                  <li>Even after moving into leadership at SOCi, I <strong>stayed in the strategic deals personally</strong> — running the most complex cycles, owning the hard conversations, and building playbooks from live field experience.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="scorecard" data-sc>
+              <div class="card-head" tabindex="0" role="button" aria-expanded="false">
+                <div>
+                  <div class="req">JD · Core responsibility</div>
+                  <div class="req-text">Drive discovery — uncover customer pains, align to business objectives <span class="toggle">›</span></div>
+                </div>
+                <span class="match-badge">✓ Strong match</span>
+              </div>
+              <div class="card-body">
+                <p>Discovery is how I win deals. Period.</p>
+                <ul>
+                  <li>At Sprout, I consistently led the team in ARR, win rate, and average deal size — and I'd credit that <em>entirely</em> to investing in deep discovery before every demo.</li>
+                  <li><strong>Demo2Win</strong>, <strong>Great Demo!</strong>, <strong>SOAR Value Selling</strong>, and <strong>PreSales Collective Technical Enablement</strong> certified — a stack of frameworks I actually apply, not just credentials.</li>
+                  <li>I lead with business context before technology: current state, the pain, the why-now, and what success looks like for each stakeholder — before I show a single screen.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="scorecard" data-sc>
+              <div class="card-head" tabindex="0" role="button" aria-expanded="false">
+                <div>
+                  <div class="req">JD · Core responsibility</div>
+                  <div class="req-text">Deliver high-impact presentations &amp; demos that tell Slack's differentiated story <span class="toggle">›</span></div>
+                </div>
+                <span class="match-badge">✓ Strong match</span>
+              </div>
+              <div class="card-body">
+                <p>Demo craft is a discipline I've invested in personally for a decade. Three methodology certifications back it up.</p>
+                <ul>
+                  <li><strong>Demo2Win</strong>, <strong>Great Demo!</strong>, and <strong>Speechless POINT</strong> certified — product demo methodology and creative executive communication.</li>
+                  <li>At Sprout Social, I designed and delivered the demos that helped win global enterprise brands — contributing to the <strong>$200M ARR milestone</strong>.</li>
+                  <li>I measure a good demo by whether the customer can articulate the value back to me without prompting — show the "wow" first, then build the story behind it.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="scorecard" data-sc>
+              <div class="card-head" tabindex="0" role="button" aria-expanded="false">
+                <div>
+                  <div class="req">JD · Core responsibility</div>
+                  <div class="req-text">Design Slack-based solutions that drive measurable value <span class="toggle">›</span></div>
+                </div>
+                <span class="match-badge">✓ Strong match</span>
+              </div>
+              <div class="card-body">
+                <p>I'm a Slack power user of <strong>10+ years</strong> across multiple organizations. I know this product from the user, practitioner, and now seller perspective — that context sharpens both discovery and demo.</p>
+                <ul>
+                  <li>Daily-driver familiarity with <strong>Channels, Huddles, Workflows, Integrations, Slackbot</strong> — and now the <strong>Agentforce</strong> integrations (Sales, IT Service, HR Service, Tableau), <strong>Enterprise Search</strong>, and <strong>MCP Server</strong>.</li>
+                  <li>I've spent my career in the collaboration / productivity category — Sprout Social (social) and SOCi (localized marketing workflows). Translating capability into measurable business outcomes is the muscle.</li>
+                  <li>That authenticity shows up in discovery and demos in ways that can't be faked — I can talk about what actually breaks, what actually wins, and what a serious workflow looks like in production.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="scorecard" data-sc>
+              <div class="card-head" tabindex="0" role="button" aria-expanded="false">
+                <div>
+                  <div class="req">JD · Core responsibility</div>
+                  <div class="req-text">Support security, compliance, and architecture conversations; address technical objections <span class="toggle">›</span></div>
+                </div>
+                <span class="match-badge">✓ Strong match</span>
+              </div>
+              <div class="card-body">
+                <p>Security is where late-stage enterprise deals live or die — and it's where I've personally earned my stripes. I've owned the security / compliance conversation in dozens of enterprise deals across a decade, and I can tell the <strong>Einstein Trust Layer</strong> story with confidence: zero data retention, no training on customer data, data masking, admin controls by channel.</p>
+                <ul>
+                  <li>Hands-on fluency with <strong>SSO, SCIM, user lifecycle management, audit logging, and API-level conversations</strong> across enterprise SaaS deals since my Sprout days.</li>
+                  <li>At SOCi I also built the <strong>knowledge base, cross-functional partnerships (Security, IT, Legal), and repeatable process</strong> for the rest of the SE team — because I was already the one running those calls, and I wanted the motion documented.</li>
+                  <li>Problem solving is in my DNA (to borrow the JD phrase). I love the late-stage deal where the SE has to walk into a skeptical security review, align on the architecture, and unblock the close.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="scorecard" data-sc>
+              <div class="card-head" tabindex="0" role="button" aria-expanded="false">
+                <div>
+                  <div class="req">JD · Core responsibility</div>
+                  <div class="req-text">Guide customers through the evaluation process <span class="toggle">›</span></div>
+                </div>
+                <span class="match-badge">✓ Strong match</span>
+              </div>
+              <div class="card-body">
+                <p>I've personally guided enterprise buyers through end-to-end evaluations across a decade: discovery → demo → POC / pilot → security review → technical decision → close. This is the craft I want to run at Slack scale.</p>
+                <ul>
+                  <li>I build <strong>tailored solution designs</strong> and written proposals that do the work for my buyer — mapping product capability to their stated business objectives, so my champion can carry the case internally when I'm not in the room.</li>
+                  <li>POC / pilot design: clear success criteria up front, checkpoints along the way, and a technical decision framework the buyer can defend to their committee.</li>
+                  <li>I redesigned the <strong>RFP workflow</strong> at SOCi (with Loopio) because I was the SE answering the most RFPs — measurable lift in quality and turnaround time.</li>
+                  <li>As a former marketing leader, I know what it feels like to be the buyer under pressure to deliver ROI on a new tool. That empathy shows up in every evaluation I run.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="scorecard" data-sc>
+              <div class="card-head" tabindex="0" role="button" aria-expanded="false">
+                <div>
+                  <div class="req">JD · Core responsibility</div>
+                  <div class="req-text">Contribute to the success of a rapidly growing, evolving SE organisation <span class="toggle">›</span></div>
+                </div>
+                <span class="match-badge">✓ Strong match</span>
+              </div>
+              <div class="card-body">
+                <p>I've lived inside two hypergrowth SE orgs as an IC. I know what the motion feels like from the front line — the pace, the rep count, the constant territory and product shifts, and the need to self-orient when the org is changing under you.</p>
+                <ul>
+                  <li>At Sprout Social (pre-IPO → $200M ARR), I joined as an Enterprise SE and grew into Lead SE through the IPO — <strong>President's Club</strong>, multiple <strong>Enterprise Team MVPs</strong>, and in the trenches of a category-defining run.</li>
+                  <li>A steadying hand in chaos — that's the phrase peers and managers have used to describe me across ten years of enterprise SE work.</li>
+                  <li>And because I've also led SE orgs, I know how the Slack org is likely thinking about enablement, tooling, and process. I can plug in fast, find the gaps as I hit them in my own deals, and help the org level up — without waiting to be asked.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="scorecard" data-sc>
+              <div class="card-head" tabindex="0" role="button" aria-expanded="false">
+                <div>
+                  <div class="req">JD · Core responsibility</div>
+                  <div class="req-text">Liaison between Product, Marketing, Sales — share customer feedback into roadmap <span class="toggle">›</span></div>
+                </div>
+                <span class="match-badge">✓ Strong match</span>
+              </div>
+              <div class="card-body">
+                <p>This is an area where I'm differentiated — I spent <strong>four years in corporate marketing leadership</strong> (Director of Marketing at IRIO, Sr. Manager of Marketing Strategy at GuideStone) before moving into presales. I speak all three dialects natively.</p>
+                <ul>
+                  <li>At Sprout I built the presales-to-product feedback loop with our PM team so demo-floor signal — the unasked question, the missed capability, the near-miss on a deal — turned into real backlog items.</li>
+                  <li>At SOCi I was hands-on in the launch of the company's <strong>first agentic AI product</strong>, working directly with Product and Marketing to shape the story and the enablement so the SE team could sell it on day one.</li>
+                  <li>I take the liaison role seriously because the SE is the closest the product team has to the customer without being in the room. That's a responsibility — not a side project.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="scorecard" data-sc>
+              <div class="card-head" tabindex="0" role="button" aria-expanded="false">
+                <div>
+                  <div class="req">JD · Core responsibility</div>
+                  <div class="req-text">Mentor &amp; coach SEs, account teams, and partners on positioning Slack as the Agentic OS <span class="toggle">›</span></div>
+                </div>
+                <span class="match-badge">✓ Strong match · Differentiator</span>
+              </div>
+              <div class="card-body">
+                <p>This is the dimension most IC candidates won't bring — and it's explicitly in the JD for the Principal title.</p>
+                <ul>
+                  <li>Four years of SE leadership at SOCi, including developing emerging leaders <strong>into managers themselves</strong> — but the core of my career is ten years of enterprise SE craft.</li>
+                  <li>Built onboarding, career pathing, and demo certification — so coaching is a process I can run, not just a vibe.</li>
+                  <li>My leadership background is a <strong>force multiplier</strong>, not a distraction. The IC work is the headline. But on deal reviews, ride-alongs, enablement, and onboarding, I can contribute beyond my own pipeline — without taking time from the deals I'm hired to win.</li>
+                </ul>
+                <div class="callout">Pipeline first. Force multiplier second. Both.</div>
+              </div>
+            </div>
+
+            <a class="thread-replies" href="#" onclick="switchChannel('why-slack'); return false;">
+              <span class="avatars">
+                <span class="a" style="background:linear-gradient(135deg,#4A154B,#611F69);"></span>
+                <span class="a" style="background:linear-gradient(135deg,#ECB22E,#E01E5A);"></span>
+              </span>
+              <span class="reply-count">3 replies in thread</span>
+              <span class="reply-preview">"Why Slack? Why now? Why IC?" →</span>
+            </a>
+
+          </div>
+        </div>
+
+      </div>
+      <div class="composer">
+        <div class="box">
+          <div class="compose-input"><span class="hint">Message #role-fit</span></div>
+          <div class="action-bar">
+            <div class="left">
+              <span class="ai" title="Add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+              <span class="ai" title="Video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></span>
+              <span class="ai" title="Audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
+            </div>
+            <div class="right">
+              <span class="ai" title="Emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>
+              <span class="ai" title="Mention">@</span>
+              <span class="ai" title="Formatting" style="font-weight:900;">Aa</span>
+              <span class="send" title="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span>
+              <span class="send-caret">▾</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== WHY SLACK ========== -->
+    <section class="channel-view" data-channel="why-slack" aria-label="why-slack channel">
+      <div class="channel-header">
+        <div class="chan-main">
+          <div class="chan-title"><span class="hash">#</span>why-slack<span class="caret">▾</span></div>
+          <div class="chan-topic">Why Slack. Why now. Why I'm stepping back from leadership to live the motion again.</div>
+        </div>
+        <div class="chan-actions">
+          <button class="huddle-btn" aria-label="Start huddle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v-3a9 9 0 0 1 18 0v3"/><path d="M21 16v1a2 2 0 0 1-2 2h-1v-5h1a2 2 0 0 1 2 2zM3 16v1a2 2 0 0 0 2 2h1v-5H5a2 2 0 0 0-2 2z"/></svg>
+            Huddle
+            <span class="huddle-caret">▾</span>
+          </button>
+          <button class="member-btn" aria-label="3 members">
+            <span class="members-stack">
+              <span class="m" style="background:linear-gradient(135deg,#4A154B,#611F69);"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</span>
+              <span class="m" style="background:linear-gradient(135deg,#007A5A,#36C5F0);">HM</span>
+              <span class="m" style="background:linear-gradient(135deg,#ECB22E,#E01E5A);">🫱</span>
+            </span>
+            <span>3</span>
+          </button>
+          <button class="canvas-btn" aria-label="Canvas">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="pinned-banner">
+        <span class="pin-icon">📌</span>
+        <span><strong>3 pinned messages</strong> — the answers I'd lead with in a first conversation</span>
+      </div>
+      <div class="messages" id="msgs-why-slack">
+        <div class="day-divider"><span class="chip">Pinned thread</span></div>
+
+        <!-- Why Slack -->
+        <div class="msg">
+          <div class="avatar you"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</div>
+          <div class="msg-body">
+            <div class="header">
+              <span class="name">Cody Cornett</span>
+              <span class="time">10:14 AM</span>
+              <span class="time">📌 pinned</span>
+            </div>
+            <div class="text">
+              <div class="rich-block">
+                <h3><span class="pin">📌</span> Why Slack?</h3>
+                <p>Slack is positioning itself as the <strong>Agentic OS for the enterprise</strong> — the operating system where people, data, apps, and AI agents all work together in one place. The timing matters because most companies are stuck in an early AI pattern right now: they've handed employees access to an LLM or two and told them to find efficiencies. Adoption is inconsistent. Value is fragmented.</p>
+                <p>What Slack solves is the <strong>coordination problem</strong>. Employees already live here. Instead of switching between tools and figuring out which AI does what, they have a conversation — and Slack routes to the right agent, takes the right action, and brings it back into a single thread. No coding. No learning curve. And it runs within the permissions and data boundaries the organization already has in place.</p>
+                <p>Agentic AI — AI that takes action toward goals, not just answers questions — is ready for the enterprise. Slack is positioning itself as where that shift actually <em>lands</em> for every employee, not just the technical ones. That's the story I want to be telling.</p>
+              </div>
+            </div>
+            <div class="reactions">
+              <span class="reaction"><span class="emo">🎯</span> 3</span>
+              <span class="reaction"><span class="emo">💯</span> 2</span>
+              <span class="reaction"><span class="emo">🤖</span> 2</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Why IC + Slack -->
+        <div class="msg">
+          <div class="avatar you"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</div>
+          <div class="msg-body">
+            <div class="header">
+              <span class="name">Cody Cornett</span>
+              <span class="time">10:16 AM</span>
+              <span class="time">📌 pinned</span>
+            </div>
+            <div class="text">
+              <div class="rich-block">
+                <h3><span class="pin">📌</span> Why step back to an IC role?</h3>
+                <p>My foundation is as an individual contributor. I spent five years as an Enterprise SE and Lead SE at Sprout Social through the IPO and the run to $200M ARR — President's Club, multiple Enterprise Team MVPs, and the deals to back it up. That's the motion I love and the motion I want to be running again at Slack.</p>
+                <p>I spent the last four years leading SE teams at SOCi. That experience sharpened me: I've seen what separates good SEs from great ones, and I know how to plug into a team without friction. But the part of the work I'm best at — and most energized by — is running complex enterprise deals.</p>
+                <p>AI is the biggest platform shift I've seen in my career, and I've been through several. I want to earn my expertise at the front lines before I lead others through it. And Slack is where I want to do that: the Agentic OS vision, the Salesforce integration, the scale of what's being built here. I want to be <em>inside</em> that inflection point, not watching it from a leadership remove.</p>
+                <p>And candidly — my leadership background isn't something I'm setting aside. The JD calls for mentoring SEs and coaching account teams. <strong>I can contribute beyond my own pipeline.</strong> That's a dimension most IC candidates won't bring.</p>
+              </div>
+            </div>
+            <div class="reactions">
+              <span class="reaction mine"><span class="emo">💪</span> 4</span>
+              <span class="reaction"><span class="emo">🙌</span> 2</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Why now -->
+        <div class="msg">
+          <div class="avatar you"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</div>
+          <div class="msg-body">
+            <div class="header">
+              <span class="name">Cody Cornett</span>
+              <span class="time">10:18 AM</span>
+              <span class="time">📌 pinned</span>
+            </div>
+            <div class="text">
+              <div class="rich-block">
+                <h3><span class="pin">📌</span> Why now?</h3>
+                <p>Three forces are converging, and the window is open right now:</p>
+                <p><strong>1. Agentic AI is production-ready.</strong> The Slackbot relaunch in January 2026 turned a personal assistant into an orchestration layer across 2,600+ connected apps. That's not a demo — that's shipped enterprise capability.</p>
+                <p><strong>2. Enterprise buyers are ready.</strong> The first wave of AI experimentation has matured into a real procurement conversation: "where does this land for every employee?" Slack is a natural answer to that question because employees already live there.</p>
+                <p><strong>3. The SE motion needs translators.</strong> The bottleneck for most customers isn't capability — it's making the story land across IT, Security, and the business. That's the work I want to do.</p>
+              </div>
+            </div>
+            <div class="reactions">
+              <span class="reaction"><span class="emo">⚡</span> 3</span>
+              <span class="reaction"><span class="emo">🧭</span> 2</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="composer">
+        <div class="box">
+          <div class="compose-input"><span class="hint">Message #why-slack</span></div>
+          <div class="action-bar">
+            <div class="left">
+              <span class="ai" title="Add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+              <span class="ai" title="Video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></span>
+              <span class="ai" title="Audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
+            </div>
+            <div class="right">
+              <span class="ai" title="Emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>
+              <span class="ai" title="Mention">@</span>
+              <span class="ai" title="Formatting" style="font-weight:900;">Aa</span>
+              <span class="send" title="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span>
+              <span class="send-caret">▾</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== TRACK RECORD ========== -->
+    <section class="channel-view" data-channel="track-record" aria-label="track-record channel">
+      <div class="channel-header">
+        <div class="chan-main">
+          <div class="chan-title"><span class="hash">#</span>track-record<span class="caret">▾</span></div>
+          <div class="chan-topic">The numbers behind the narrative. IC honors, enterprise deal craft, and a player-coach chapter.</div>
+        </div>
+        <div class="chan-actions">
+          <button class="huddle-btn" aria-label="Start huddle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v-3a9 9 0 0 1 18 0v3"/><path d="M21 16v1a2 2 0 0 1-2 2h-1v-5h1a2 2 0 0 1 2 2zM3 16v1a2 2 0 0 0 2 2h1v-5H5a2 2 0 0 0-2 2z"/></svg>
+            Huddle
+            <span class="huddle-caret">▾</span>
+          </button>
+          <button class="member-btn" aria-label="3 members">
+            <span class="members-stack">
+              <span class="m" style="background:linear-gradient(135deg,#4A154B,#611F69);"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</span>
+              <span class="m" style="background:linear-gradient(135deg,#007A5A,#36C5F0);">HM</span>
+              <span class="m" style="background:linear-gradient(135deg,#ECB22E,#E01E5A);">🫱</span>
+            </span>
+            <span>3</span>
+          </button>
+          <button class="canvas-btn" aria-label="Canvas">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="messages" id="msgs-track">
+        <div class="day-divider"><span class="chip">Headline numbers</span></div>
+
+        <div class="msg">
+          <div class="avatar you"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</div>
+          <div class="msg-body">
+            <div class="header">
+              <span class="name">Cody Cornett</span>
+              <span class="time">11:04 AM</span>
+            </div>
+            <div class="text">
+              <p>The short version. Each stat is tied to a story I'm happy to go deep on in an interview.</p>
+              <div class="stats-grid">
+                <div class="stat-card yellow">
+                  <div class="stat-label">Sprout Social · IC honor</div>
+                  <div class="stat-value">President's Club</div>
+                  <div class="stat-sub">Recognized as a top-performing Enterprise SE partnered with AEs on the company's largest strategic opportunities.</div>
+                </div>
+                <div class="stat-card red">
+                  <div class="stat-label">Sprout Social · IC honor</div>
+                  <div class="stat-value">Enterprise Team MVPs</div>
+                  <div class="stat-sub">Multiple-time MVP on the Enterprise team — the SE peers and AEs wanted on their biggest deals.</div>
+                </div>
+                <div class="stat-card purple">
+                  <div class="stat-label">ARR run — as an IC SE</div>
+                  <div class="stat-value">$30M → $200M</div>
+                  <div class="stat-sub">Joined Sprout pre-IPO as an Enterprise SE, grew into Lead SE through IPO and the run to $200M ARR.</div>
+                </div>
+                <div class="stat-card blue">
+                  <div class="stat-label">Enterprise SE craft</div>
+                  <div class="stat-value">10+ years</div>
+                  <div class="stat-sub">A decade of enterprise SE work — discovery, demo, POC, security review, close. The motion I'm best at.</div>
+                </div>
+                <div class="stat-card green">
+                  <div class="stat-label">SOCi · Team impact</div>
+                  <div class="stat-value">+96% YoY</div>
+                  <div class="stat-sub">SE-driven win rate lift on core business from refined discovery, demo, and RFP processes — which I ran myself as a player-coach before codifying.</div>
+                </div>
+                <div class="stat-card green">
+                  <div class="stat-label">Agentic AI Launch</div>
+                  <div class="stat-value">1st at SOCi</div>
+                  <div class="stat-sub">Hands-on in the company's first agentic AI product launch — working directly with Product and Marketing to shape the story.</div>
+                </div>
+              </div>
+            </div>
+            <div class="reactions">
+              <span class="reaction"><span class="emo">📈</span> 4</span>
+              <span class="reaction"><span class="emo">🚀</span> 3</span>
+              <span class="reaction"><span class="emo">🏆</span> 2</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Story: Sprout Social -->
+        <div class="msg">
+          <div class="avatar you"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</div>
+          <div class="msg-body">
+            <div class="header">
+              <span class="name">Cody Cornett</span>
+              <span class="time">11:08 AM</span>
+            </div>
+            <div class="text">
+              <div class="rich-block">
+                <h3>📘 Sprout Social · 2016 — 2021 · 5 years as an IC SE</h3>
+                <p><strong>Enterprise SE → Senior SE → Lead SE.</strong> Joined pre-IPO as an Enterprise SE and grew through the IPO and the climb past $200M ARR.</p>
+                <p>This is where my craft was built — and where my honors stack up: <strong>President's Club</strong>, multiple <strong>Enterprise Team MVPs</strong>, top contributor in ARR, win rate, and average deal size. I was the SE AEs asked for on their most strategic, most technical, most security-scrutinized accounts.</p>
+                <p>Deep discovery, tailored demos, long-cycle enterprise deals across regulated industries — the exact motion the Principal Slack SE role is asking for.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Story: SOCi -->
+        <div class="msg">
+          <div class="avatar you"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</div>
+          <div class="msg-body">
+            <div class="header">
+              <span class="name">Cody Cornett</span>
+              <span class="time">11:12 AM</span>
+            </div>
+            <div class="text">
+              <div class="rich-block">
+                <h3>🏢 SOCi · 2021 — 2025 · Player-coach SE leader</h3>
+                <p><strong>Associate Director → Director → Sr. Director, Solutions Engineering.</strong> Led SE through SOCi's climb from $30M to $100M+ ARR — and stayed close to the craft the whole way.</p>
+                <p>I was a <strong>player-coach</strong>. I personally ran the most complex deals, owned the hardest security and architecture conversations, and designed the tailored solution narratives for the largest strategic accounts. That's where the <strong>+96% SE-driven win rate lift</strong> and the refined discovery, demo, and RFP processes came from — I built the motion by running it myself first, then documenting it for the team.</p>
+                <p>Hands-on in the launch of SOCi's <strong>first agentic AI product</strong>, working cross-functionally with Product and Marketing on the story and enablement.</p>
+                <p>I'm leaving SOCi because I want the next chapter of my career to be on the front lines of enterprise AI, not running a team that's running that motion without me.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="composer">
+        <div class="box">
+          <div class="compose-input"><span class="hint">Message #track-record</span></div>
+          <div class="action-bar">
+            <div class="left">
+              <span class="ai" title="Add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+              <span class="ai" title="Video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></span>
+              <span class="ai" title="Audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
+            </div>
+            <div class="right">
+              <span class="ai" title="Emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>
+              <span class="ai" title="Mention">@</span>
+              <span class="ai" title="Formatting" style="font-weight:900;">Aa</span>
+              <span class="send" title="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span>
+              <span class="send-caret">▾</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== AI FLUENCY ========== -->
+    <section class="channel-view" data-channel="ai-fluency" aria-label="ai-fluency channel">
+      <div class="channel-header">
+        <div class="chan-main">
+          <div class="chan-title"><span class="hash">#</span>ai-fluency<span class="caret">▾</span></div>
+          <div class="chan-topic">Proof I can hold the technical conversation with a modern IT buyer about Slackbot, RAG, and agents.</div>
+        </div>
+        <div class="chan-actions">
+          <button class="huddle-btn" aria-label="Start huddle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v-3a9 9 0 0 1 18 0v3"/><path d="M21 16v1a2 2 0 0 1-2 2h-1v-5h1a2 2 0 0 1 2 2zM3 16v1a2 2 0 0 0 2 2h1v-5H5a2 2 0 0 0-2 2z"/></svg>
+            Huddle
+            <span class="huddle-caret">▾</span>
+          </button>
+          <button class="member-btn" aria-label="3 members">
+            <span class="members-stack">
+              <span class="m" style="background:linear-gradient(135deg,#4A154B,#611F69);"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</span>
+              <span class="m" style="background:linear-gradient(135deg,#007A5A,#36C5F0);">HM</span>
+              <span class="m" style="background:linear-gradient(135deg,#ECB22E,#E01E5A);">🫱</span>
+            </span>
+            <span>3</span>
+          </button>
+          <button class="canvas-btn" aria-label="Canvas">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="messages" id="msgs-ai">
+        <div class="day-divider"><span class="chip">Technical depth</span></div>
+
+        <div class="msg">
+          <div class="avatar you"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</div>
+          <div class="msg-body">
+            <div class="header">
+              <span class="name">Cody Cornett</span>
+              <span class="time">1:22 PM</span>
+            </div>
+            <div class="text">
+              <p>A few things I'd want to be able to explain cleanly on day one — and that I can today. These are the conversations that separate SEs who can hold the room from SEs who can't.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slackbot -->
+        <div class="msg">
+          <div class="avatar you"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</div>
+          <div class="msg-body">
+            <div class="header">
+              <span class="name">Cody Cornett</span>
+              <span class="time">1:24 PM</span>
+            </div>
+            <div class="text">
+              <div class="rich-block">
+                <h3>🤖 What is the new Slackbot, actually?</h3>
+                <p>The original Slackbot was essentially a notification system — reminders, automated messages, basic help responses. Useful, but not transformative. What Salesforce launched in January 2026 is a completely different product that kept the familiar name.</p>
+                <p>The new Slackbot is a <strong>personal AI agent</strong> built natively into Slack for every employee — powered by <strong>Anthropic's Claude</strong>, with no setup, no installation, no training required. What makes it different from other AI tools is <strong>context</strong>. Most AI assistants start from zero every time you use them. Slackbot already knows who you are, what you're working on, and what decisions have been made — because it lives inside Slack, where your work actually happens, and only sees what you're already permissioned to see.</p>
+                <p>It can draft emails, schedule meetings, summarize threads, transcribe calls, analyze documents, and execute multi-step workflows across <strong>2,600+ connected apps</strong>. Beyond personal productivity, it's becoming the <strong>orchestration layer for the entire agent ecosystem</strong> — employees don't need to know which agent handles sales vs. HR vs. IT. They tell Slackbot what they need and it routes.</p>
+              </div>
+            </div>
+            <div class="reactions">
+              <span class="reaction"><span class="emo">🧠</span> 2</span>
+              <span class="reaction"><span class="emo">🤖</span> 2</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RAG -->
+        <div class="msg">
+          <div class="avatar you"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</div>
+          <div class="msg-body">
+            <div class="header">
+              <span class="name">Cody Cornett</span>
+              <span class="time">1:28 PM</span>
+            </div>
+            <div class="text">
+              <div class="rich-block">
+                <h3>📚 How Slack gathers company context (and why that matters to IT)</h3>
+                <p>The mechanism is <strong>RAG — Retrieval Augmented Generation</strong>. Rather than relying on what the model memorized during training (generic and potentially outdated), RAG retrieves the most relevant information from the company's actual business data in real time and uses that as context for every response. That's what eliminates hallucination and keeps answers specific.</p>
+                <p>In Salesforce's case, that retrieval layer is <strong>Data Cloud</strong>. Data Cloud ingests and indexes both structured data (CRM records, opportunity history) and unstructured data (Slack conversations, emails, call transcripts, documents). It chunks the content, converts it into <strong>vector embeddings for semantic search</strong>, and makes it retrievable in milliseconds.</p>
+                <p>Critically — it runs within the <strong>permissions architecture</strong> already in place. Slackbot only surfaces information the employee is already authorized to see. You get the intelligence of enterprise AI without the data governance risk IT is worried about.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Personal toolkit -->
+        <div class="msg">
+          <div class="avatar you"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</div>
+          <div class="msg-body">
+            <div class="header">
+              <span class="name">Cody Cornett</span>
+              <span class="time">1:33 PM</span>
+            </div>
+            <div class="text">
+              <div class="rich-block">
+                <h3>🛠️ My personal AI toolkit (what I use every day)</h3>
+                <p><strong>Daily drivers:</strong> Claude, ChatGPT, Gemini — across ideation, research, writing, and code.</p>
+                <p><strong>Concepts I'm fluent in:</strong> <code>MCP</code> (Model Context Protocol), <code>RAG</code>, knowledge graphs, agents vs. assistants, <code>APIs</code>, <code>SSO</code>, and user lifecycle management — all the surface area an SE needs to navigate an IT architecture conversation.</p>
+                <p><strong>Formal learning:</strong> Completed <strong>Claude Code in Action (Anthropic Academy)</strong>, among other coursework. Demo2Win, Great Demo!, Speechless POINT, PreSales Collective Technical Enablement, SOAR Sales Training.</p>
+                <p><strong>Proof of use:</strong> <em>This page.</em> Built with Claude in a single Cowork session. See <a href="#" onclick="switchChannel('proof-of-craft'); return false;">#proof-of-craft</a>.</p>
+              </div>
+            </div>
+            <div class="reactions">
+              <span class="reaction mine"><span class="emo">🛠️</span> 2</span>
+              <span class="reaction"><span class="emo">🟠</span> 1</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="composer">
+        <div class="box">
+          <div class="compose-input"><span class="hint">Message #ai-fluency</span></div>
+          <div class="action-bar">
+            <div class="left">
+              <span class="ai" title="Add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+              <span class="ai" title="Video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></span>
+              <span class="ai" title="Audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
+            </div>
+            <div class="right">
+              <span class="ai" title="Emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>
+              <span class="ai" title="Mention">@</span>
+              <span class="ai" title="Formatting" style="font-weight:900;">Aa</span>
+              <span class="send" title="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span>
+              <span class="send-caret">▾</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PROOF OF CRAFT ========== -->
+    <section class="channel-view" data-channel="proof-of-craft" aria-label="proof-of-craft channel">
+      <div class="channel-header">
+        <div class="chan-main">
+          <div class="chan-title"><span class="hash">#</span>proof-of-craft<span class="caret">▾</span></div>
+          <div class="chan-topic">The page itself is the third demonstration. Here's what it took.</div>
+        </div>
+        <div class="chan-actions">
+          <button class="huddle-btn" aria-label="Start huddle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v-3a9 9 0 0 1 18 0v3"/><path d="M21 16v1a2 2 0 0 1-2 2h-1v-5h1a2 2 0 0 1 2 2zM3 16v1a2 2 0 0 0 2 2h1v-5H5a2 2 0 0 0-2 2z"/></svg>
+            Huddle
+            <span class="huddle-caret">▾</span>
+          </button>
+          <button class="member-btn" aria-label="3 members">
+            <span class="members-stack">
+              <span class="m" style="background:linear-gradient(135deg,#4A154B,#611F69);"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</span>
+              <span class="m" style="background:linear-gradient(135deg,#007A5A,#36C5F0);">HM</span>
+              <span class="m" style="background:linear-gradient(135deg,#ECB22E,#E01E5A);">🫱</span>
+            </span>
+            <span>3</span>
+          </button>
+          <button class="canvas-btn" aria-label="Canvas">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="messages" id="msgs-craft">
+        <div class="day-divider"><span class="chip">Meta-demonstration</span></div>
+
+        <div class="msg">
+          <div class="avatar you"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</div>
+          <div class="msg-body">
+            <div class="header">
+              <span class="name">Cody Cornett</span>
+              <span class="time">2:10 PM</span>
+            </div>
+            <div class="text">
+              <p>A PDF resume would tell you what I've done. This page demonstrates how I think and what I can do with modern tools.</p>
+              <div class="rich-block">
+                <h3>🧪 The three things this page is meant to prove</h3>
+                <p><strong>1. I understand what success looks like in this role.</strong> The #role-fit channel is a requirement-by-requirement scorecard — which is the same structure I'd want to see from an SE who's done their homework on a complex deal.</p>
+                <p><strong>2. My experience is the right fit.</strong> Every claim on the scorecard is grounded in the same resume I'd hand you in PDF — just presented where you can actually engage with the parts that matter to you.</p>
+                <p><strong>3. I'm technically capable with AI.</strong> This single-file HTML experience was designed, written, and built in one Cowork session with Claude. Not a template, not a site builder — just clear direction, iterative prompting, and a working knowledge of what looks credible.</p>
+              </div>
+              <div class="callout">If that's the kind of creative problem solving you'd want on the team when a customer says "show me what Slack could do for our kickoff week" — I'd love to keep talking.</div>
+            </div>
+            <div class="reactions">
+              <span class="reaction"><span class="emo">💡</span> 2</span>
+              <span class="reaction"><span class="emo">🎯</span> 2</span>
+              <span class="reaction"><span class="emo">🟠</span> 1</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="composer">
+        <div class="box">
+          <div class="compose-input"><span class="hint">Message #proof-of-craft</span></div>
+          <div class="action-bar">
+            <div class="left">
+              <span class="ai" title="Add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+              <span class="ai" title="Video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></span>
+              <span class="ai" title="Audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
+            </div>
+            <div class="right">
+              <span class="ai" title="Emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>
+              <span class="ai" title="Mention">@</span>
+              <span class="ai" title="Formatting" style="font-weight:900;">Aa</span>
+              <span class="send" title="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span>
+              <span class="send-caret">▾</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== DM ========== -->
+    <section class="channel-view" data-channel="dm-cody" aria-label="direct message with Cody">
+      <div class="channel-header">
+        <div class="chan-main">
+          <div class="chan-title">
+            <span style="display:inline-flex;align-items:center;gap:6px;">
+              <span class="dm-avatar" style="width:24px;height:24px;font-size:10px;border-radius:6px;"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</span>
+              Cody Cornett
+              <span class="caret">▾</span>
+            </span>
+          </div>
+          <div class="chan-topic">Direct message · Dallas, TX · Open to conversation</div>
+        </div>
+        <div class="chan-actions">
+          <button class="huddle-btn" aria-label="Start huddle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v-3a9 9 0 0 1 18 0v3"/><path d="M21 16v1a2 2 0 0 1-2 2h-1v-5h1a2 2 0 0 1 2 2zM3 16v1a2 2 0 0 0 2 2h1v-5H5a2 2 0 0 0-2 2z"/></svg>
+            Huddle
+            <span class="huddle-caret">▾</span>
+          </button>
+          <button class="canvas-btn" aria-label="Canvas">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="messages" id="msgs-dm">
+
+        <div class="day-divider"><span class="chip">Let's talk</span></div>
+
+        <div class="msg">
+          <div class="avatar you"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC<span class="presence"></span></div>
+          <div class="msg-body">
+            <div class="header">
+              <span class="name">Cody Cornett</span>
+              <span class="time">Now</span>
+            </div>
+            <div class="text">
+              <p>If you've gotten this far, thank you for the time — I know your week is packed.</p>
+              <p>I'd love to keep the conversation going. Here's the fastest way to reach me:</p>
+              <div class="contact-card">
+                <a class="row" href="mailto:codydcornett@gmail.com">
+                  <span class="ico">✉️</span>
+                  <span>
+                    <div class="label">Email</div>
+                    <div class="value">codydcornett@gmail.com</div>
+                  </span>
+                </a>
+                <a class="row" href="tel:+12147666098">
+                  <span class="ico">📱</span>
+                  <span>
+                    <div class="label">Phone</div>
+                    <div class="value">(214) 766-6098</div>
+                  </span>
+                </a>
+                <a class="row" href="https://linkedin.com/in/codycornett" target="_blank" rel="noopener">
+                  <span class="ico">🔗</span>
+                  <span>
+                    <div class="label">LinkedIn</div>
+                    <div class="value">linkedin.com/in/codycornett</div>
+                  </span>
+                </a>
+                <div class="row">
+                  <span class="ico">📍</span>
+                  <span>
+                    <div class="label">Location</div>
+                    <div class="value">Dallas, TX · Open to hybrid/remote</div>
+                  </span>
+                </div>
+              </div>
+              <div class="callout">I'll bring the same consultative discovery-first approach to our first conversation that I'd bring to a Slack customer. Looking forward to meeting the team.</div>
+            </div>
+            <div class="reactions">
+              <span class="reaction"><span class="emo">🙏</span> 1</span>
+              <span class="reaction"><span class="emo">🟢</span> 1</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gentle ending typing indicator -->
+        <div class="typing" aria-hidden="true">
+          <span>Cody is thinking about what to build next</span>
+          <span class="dots"><span></span><span></span><span></span></span>
+        </div>
+
+      </div>
+      <div class="composer">
+        <div class="box">
+          <div class="compose-input"><span class="hint">Message Cody</span></div>
+          <div class="action-bar">
+            <div class="left">
+              <span class="ai" title="Add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+              <span class="ai" title="Video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></span>
+              <span class="ai" title="Audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
+            </div>
+            <div class="right">
+              <span class="ai" title="Emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>
+              <span class="ai" title="Mention">@</span>
+              <span class="ai" title="Formatting" style="font-weight:900;">Aa</span>
+              <span class="send" title="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span>
+              <span class="send-caret">▾</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Mobile: channel-view topbar (back arrow + channel name) -->
+<div class="mobile-topbar" role="banner">
+  <button class="back" aria-label="Back to channels" onclick="mobileBackToChannels()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <div class="chan-name-wrap">
+    <div class="chan-name" id="mobile-chan-name"><span class="hash">#</span><span id="mobile-chan-text">welcome</span></div>
+    <div class="chan-sub" id="mobile-chan-sub">Start here</div>
+  </div>
+  <button class="huddle-mobile" aria-label="Huddle">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M3 14v-3a9 9 0 0 1 18 0v3"/><path d="M21 16v1a2 2 0 0 1-2 2h-1v-5h1a2 2 0 0 1 2 2zM3 16v1a2 2 0 0 0 2 2h1v-5H5a2 2 0 0 0-2 2z"/></svg>
+  </button>
+</div>
+
+<!-- Mobile: persistent bottom nav -->
+<nav class="mobile-bottom-nav" role="navigation" aria-label="Mobile nav">
+  <button class="mbn-item active" onclick="mobileBackToChannels()" aria-label="Home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1V9.5z"/></svg>
+    Home
+  </button>
+  <button class="mbn-item" onclick="switchChannel('dm-cody')" aria-label="DMs">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    DMs
+  </button>
+  <button class="mbn-item" aria-label="Activity">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    Activity
+  </button>
+  <button class="mbn-item" aria-label="More">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+    More
+  </button>
+</nav>
+
+<script>
+  // ------- Channel switching -------
+  // Channel display map for mobile topbar (name + subtitle)
+  const CHANNEL_META = {
+    'welcome':        { name: 'welcome',        hash: true,  sub: 'Start here — a 30-second tour' },
+    'role-fit':       { name: 'role-fit',       hash: true,  sub: 'Every JD requirement × receipts' },
+    'why-slack':      { name: 'why-slack',      hash: true,  sub: "Why Slack, why now, why IC" },
+    'track-record':   { name: 'track-record',   hash: true,  sub: 'The numbers behind the story' },
+    'ai-fluency':     { name: 'ai-fluency',     hash: true,  sub: 'Technical conversations in AI' },
+    'proof-of-craft': { name: 'proof-of-craft', hash: true,  sub: 'How this page was built' },
+    'dm-cody':        { name: 'Cody Cornett',   hash: false, sub: 'Direct message' }
+  };
+
+  function switchChannel(channel) {
+    document.querySelectorAll('.nav-item').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.channel === channel);
+    });
+    document.querySelectorAll('.channel-view').forEach(view => {
+      view.classList.toggle('active', view.dataset.channel === channel);
+    });
+    // reset scroll in the new channel
+    const active = document.querySelector('.channel-view.active .messages');
+    if (active) active.scrollTop = 0;
+
+    // Update mobile topbar text
+    const meta = CHANNEL_META[channel];
+    if (meta) {
+      const mName = document.getElementById('mobile-chan-text');
+      const mSub  = document.getElementById('mobile-chan-sub');
+      const mHash = document.querySelector('#mobile-chan-name .hash');
+      if (mName) mName.textContent = meta.name;
+      if (mSub)  mSub.textContent  = meta.sub;
+      if (mHash) mHash.style.display = meta.hash ? '' : 'none';
+    }
+    // On mobile, transition from sidebar view -> channel view
+    document.body.classList.add('m-channel');
+
+    // Clean up legacy overlay state
+    document.getElementById('sidebar').classList.remove('mobile-open');
+  }
+
+  // ------- Mobile: back to channel list -------
+  function mobileBackToChannels() {
+    document.body.classList.remove('m-channel');
+  }
+
+  document.querySelectorAll('.nav-item[data-channel]').forEach(btn => {
+    btn.addEventListener('click', () => switchChannel(btn.dataset.channel));
+  });
+
+  // ------- Scorecard expand/collapse -------
+  document.querySelectorAll('.scorecard .card-head').forEach(head => {
+    const open = () => {
+      const card = head.closest('.scorecard');
+      card.classList.toggle('open');
+      head.setAttribute('aria-expanded', card.classList.contains('open'));
+    };
+    head.addEventListener('click', open);
+    head.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        open();
+      }
+    });
+  });
+
+  // Open the first scorecard by default so the design is legible on arrival
+  const firstCard = document.querySelector('[data-channel="role-fit"] .scorecard');
+  if (firstCard) firstCard.classList.add('open');
+
+  // ------- Reaction toggle -------
+  document.querySelectorAll('.reaction').forEach(r => {
+    r.addEventListener('click', () => {
+      r.classList.toggle('mine');
+      // bump count
+      const txt = r.innerText.trim();
+      const m = txt.match(/(\d+)$/);
+      if (m) {
+        const n = parseInt(m[1], 10);
+        const delta = r.classList.contains('mine') ? 1 : -1;
+        r.lastChild.nodeValue = ' ' + Math.max(0, n + delta);
+      }
+    });
+  });
+
+  // ------- Mobile sidebar toggle -------
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('mobile-open');
+  }
+</script>
+
+</body>
+</html>
