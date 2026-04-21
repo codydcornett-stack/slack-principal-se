@@ -686,6 +686,12 @@
     background: #fff; color: var(--purple);
     padding: 8px 16px; border-radius: 6px;
     font-weight: 900; font-size: 14px;
+    text-decoration: none; cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .canvas .canvas-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   }
 
   /* Thread reply */
@@ -1026,7 +1032,7 @@
       </span>
       <span class="rlabel">Home</span>
     </button>
-    <button class="rail-btn" aria-label="Direct messages">
+    <button class="rail-btn" aria-label="Direct messages" onclick="switchChannel('dm-cody')">
       <span class="rico">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       </span>
@@ -1111,9 +1117,6 @@
       <button class="nav-item" data-channel="ai-fluency">
         <span class="hash">#</span> ai-fluency
       </button>
-      <button class="nav-item" data-channel="proof-of-craft">
-        <span class="hash">#</span> proof-of-craft
-      </button>
     </div>
 
     <div class="section">
@@ -1163,10 +1166,6 @@
           </button>
         </div>
       </div>
-      <div class="pinned-banner">
-        <span class="pin-icon">📌</span>
-        <span><strong>2 pinned</strong> — 30-second pitch and how to navigate this workspace</span>
-      </div>
       <div class="messages" id="msgs-welcome">
 
         <div class="day-divider"><span class="chip">Today</span></div>
@@ -1181,7 +1180,7 @@
             </div>
             <div class="text">
               <p>👋 Welcome to the workspace — thanks for being here.</p>
-              <p>This is my application for the <strong>Principal Slack Solution Engineer</strong> role, delivered the way I'd want a prospect to experience a solution: inside the product, in their context, with the story structured around what matters to them.</p>
+              <p>This is my case for the <strong>Principal Slack Solution Engineer</strong> role, delivered the way I'd want a prospect to experience a solution: inside the product, in their context, with the story structured around what matters to them.</p>
               <p>Have a look around at your own pace. Each channel maps to a question you're probably asking.</p>
             </div>
             <div class="reactions">
@@ -1198,16 +1197,15 @@
             <div class="header">
               <span class="name">Cody Cornett</span>
               <span class="time">9:03 AM</span>
-              <span class="time">📌 pinned</span>
             </div>
             <div class="text">
               <div class="canvas">
                 <div class="canvas-title">📌 The 30-second pitch</div>
                 <h2>A decade of enterprise SE craft. President's Club. Multiple Enterprise Team MVPs.</h2>
                 <p>I'm an <strong>enterprise Solutions Engineer with 10+ years of SaaS presales experience</strong>. Five of those years at <strong>Sprout Social</strong> as Enterprise → Lead SE — the SE AEs asked for on their most strategic deals, contributor to the $30M→$100M→$200M ARR climb and IPO, Demo2Win and Great Demo certified.</p>
-                <p>I then moved into presales leadership at <strong>SOCi</strong>, but <em>stayed close to the craft</em> — personally running the most complex deals, owning the hardest security and architecture conversations, and enabling the team for SOCi's <strong>first agentic AI product launch</strong>.</p>
-                <p>I'm making a deliberate return to full-time IC work at Slack because AI is the biggest platform shift of my career, and I want to earn front-line expertise in the Agentforce / Agentic OS motion — the most important enterprise software story of the next five years.</p>
-                <span class="canvas-cta">Open <strong style="color:var(--purple)">#role-fit</strong> for the proof →</span>
+                <p>I then moved into presales leadership at <strong>SOCi</strong>, but <em style="color:#F4E8F5; font-style: italic; opacity: 1;">stayed close to the craft</em> — coaching through complex deals, owning the security/architecture relationships, and enabling the team for SOCi's <strong>first agentic AI product launch</strong>.</p>
+                <p>I'm making a deliberate return to full-time IC work because AI is the biggest platform shift of my career, and I want to earn front-line expertise in the Agentforce / Agentic OS motion.</p>
+                <a href="#" class="canvas-cta" onclick="switchChannel('role-fit'); return false;">Open <strong style="color:var(--purple)">#role-fit</strong> for the proof →</a>
               </div>
             </div>
             <div class="reactions">
@@ -1230,12 +1228,11 @@
               <p>Here's how to get the most out of this workspace:</p>
               <div class="rich-block">
                 <h3>📋 Suggested reading order</h3>
-                <p><strong>1. <a href="#" onclick="switchChannel('role-fit'); return false;">#role-fit</a></strong> — Every bullet on the JD, mapped to Cody's receipts. Click any card to expand.</p>
-                <p><strong>2. <a href="#" onclick="switchChannel('why-slack'); return false;">#why-slack</a></strong> — Why the Agentic OS is the platform shift, and why Cody's stepping back to IC to live it.</p>
+                <p><strong>1. <a href="#" onclick="switchChannel('role-fit'); return false;">#role-fit</a></strong> — Bullets on the JD, mapped to Cody's fit. Click any card to expand.</p>
+                <p><strong>2. <a href="#" onclick="switchChannel('why-slack'); return false;">#why-slack</a></strong> — Why Slack is the perfect place for Cody to return to the front lines.</p>
                 <p><strong>3. <a href="#" onclick="switchChannel('track-record');return false;">#track-record</a></strong> — The numbers behind the story.</p>
                 <p><strong>4. <a href="#" onclick="switchChannel('ai-fluency'); return false;">#ai-fluency</a></strong> — Proof Cody can hold the technical conversation with modern IT buyers.</p>
-                <p><strong>5. <a href="#" onclick="switchChannel('proof-of-craft'); return false;">#proof-of-craft</a></strong> — How this page was built, and what it demonstrates.</p>
-                <p><strong>6. <a href="#" onclick="switchChannel('dm-cody'); return false;">Cody Cornett (DM)</a></strong> — Contact info when you're ready.</p>
+                <p><strong>5. <a href="#" onclick="switchChannel('dm-cody'); return false;">Cody Cornett (DM)</a></strong> — Reach out anytime.</p>
               </div>
             </div>
           </div>
@@ -1268,7 +1265,7 @@
       <div class="channel-header">
         <div class="chan-main">
           <div class="chan-title"><span class="hash">#</span>role-fit<span class="caret">▾</span></div>
-          <div class="chan-topic">Every JD requirement × how Cody meets it. Click any card to expand the receipts.</div>
+          <div class="chan-topic">JD requirements × how Cody meets it. Click any card to expand the receipts.</div>
         </div>
         <div class="chan-actions">
           <button class="huddle-btn" aria-label="Start huddle">
@@ -1304,7 +1301,7 @@
               <span class="time">8:30 AM</span>
             </div>
             <div class="text">
-              <p>I read the JD line by line and mapped my last decade against it. Click any card to expand.</p>
+              <p>I mapped my last decade against the JD. Click any card to expand.</p>
             </div>
 
             <!-- Scorecard cards -->
@@ -1317,11 +1314,11 @@
                 <span class="match-badge">✓ Strong match</span>
               </div>
               <div class="card-body">
-                <p>This is the work I've done personally for a decade — in the seat, on the deal, not from the sidelines.</p>
+                <p>I've personally done, coached, or created the playbook for this work for a decade.</p>
                 <ul>
-                  <li>Five years as an Enterprise / Lead SE at <strong>Sprout Social</strong>, partnering with AEs on the company's largest, most strategic opportunities — winning <strong>President's Club</strong> and multiple <strong>Enterprise Team MVPs</strong>, and leading the team in ARR, win rate, and average deal size.</li>
-                  <li>Won complex, multi-stakeholder cycles across <strong>financial services, retail, restaurants, franchise, healthcare, automotive, and multi-location enterprise</strong>.</li>
-                  <li>Even after moving into leadership at SOCi, I <strong>stayed in the strategic deals personally</strong> — running the most complex cycles, owning the hard conversations, and building playbooks from live field experience.</li>
+                  <li>Five years as an Enterprise / Lead SE at <strong>Sprout Social</strong>, partnering with AEs on the company's largest, most strategic opportunities — winning <strong>President's Club</strong> and multiple <strong>Enterprise Team MVPs</strong>, and led team in ARR, win rate, and avg deal size on multiple occasions.</li>
+                  <li>Won complex, multi-stakeholder cycles across <strong>numerous industries</strong>.</li>
+                  <li>In leadership role at SOCi, I led and coached SEs through strategic deals — owning hard conversations, and building playbooks from live field experience.</li>
                 </ul>
               </div>
             </div>
@@ -1338,7 +1335,7 @@
                 <p>Discovery is how I win deals. Period.</p>
                 <ul>
                   <li>At Sprout, I consistently led the team in ARR, win rate, and average deal size — and I'd credit that <em>entirely</em> to investing in deep discovery before every demo.</li>
-                  <li><strong>Demo2Win</strong>, <strong>Great Demo!</strong>, <strong>SOAR Value Selling</strong>, and <strong>PreSales Collective Technical Enablement</strong> certified — a stack of frameworks I actually apply, not just credentials.</li>
+                  <li><strong>Demo2Win</strong>, <strong>Great Demo!</strong>, and <strong>SOAR Value Selling</strong> certified — a stack of frameworks I actually apply, not just credentials.</li>
                   <li>I lead with business context before technology: current state, the pain, the why-now, and what success looks like for each stakeholder — before I show a single screen.</li>
                 </ul>
               </div>
@@ -1356,8 +1353,8 @@
                 <p>Demo craft is a discipline I've invested in personally for a decade. Three methodology certifications back it up.</p>
                 <ul>
                   <li><strong>Demo2Win</strong>, <strong>Great Demo!</strong>, and <strong>Speechless POINT</strong> certified — product demo methodology and creative executive communication.</li>
-                  <li>At Sprout Social, I designed and delivered the demos that helped win global enterprise brands — contributing to the <strong>$200M ARR milestone</strong>.</li>
-                  <li>I measure a good demo by whether the customer can articulate the value back to me without prompting — show the "wow" first, then build the story behind it.</li>
+                  <li>I measure a good demo by whether the customer can articulate the value back without prompting — show the "wow" first, then build the story behind it.</li>
+                  <li>At Sprout Social, I designed and delivered the demos that helped win global enterprise brands — contributing to the <strong>$200M ARR milestone</strong> and IPO.</li>
                 </ul>
               </div>
             </div>
@@ -1371,11 +1368,10 @@
                 <span class="match-badge">✓ Strong match</span>
               </div>
               <div class="card-body">
-                <p>I'm a Slack power user of <strong>10+ years</strong> across multiple organizations. I know this product from the user, practitioner, and now seller perspective — that context sharpens both discovery and demo.</p>
+                <p>I'm a Slack user of <strong>10+ years</strong> across multiple organizations. That context + my knowledge of AI architecture sharpens both discovery and demos.</p>
                 <ul>
-                  <li>Daily-driver familiarity with <strong>Channels, Huddles, Workflows, Integrations, Slackbot</strong> — and now the <strong>Agentforce</strong> integrations (Sales, IT Service, HR Service, Tableau), <strong>Enterprise Search</strong>, and <strong>MCP Server</strong>.</li>
-                  <li>I've spent my career in the collaboration / productivity category — Sprout Social (social) and SOCi (localized marketing workflows). Translating capability into measurable business outcomes is the muscle.</li>
-                  <li>That authenticity shows up in discovery and demos in ways that can't be faked — I can talk about what actually breaks, what actually wins, and what a serious workflow looks like in production.</li>
+                  <li>Daily-driver familiarity with <strong>Channels, Huddles, Workflows, Integrations, and Slackbot</strong>.</li>
+                  <li>I've spent my career using or managing connectors across collaboration / productivity tools and apps.</li>
                 </ul>
               </div>
             </div>
@@ -1389,11 +1385,10 @@
                 <span class="match-badge">✓ Strong match</span>
               </div>
               <div class="card-body">
-                <p>Security is where late-stage enterprise deals live or die — and it's where I've personally earned my stripes. I've owned the security / compliance conversation in dozens of enterprise deals across a decade, and I can tell the <strong>Einstein Trust Layer</strong> story with confidence: zero data retention, no training on customer data, data masking, admin controls by channel.</p>
+                <p>Security is where late-stage enterprise deals live or die. I've owned the security / compliance conversation in dozens of enterprise deals across a decade. The <strong>Einstein Trust Layer</strong> makes these conversations so much cleaner.</p>
                 <ul>
                   <li>Hands-on fluency with <strong>SSO, SCIM, user lifecycle management, audit logging, and API-level conversations</strong> across enterprise SaaS deals since my Sprout days.</li>
-                  <li>At SOCi I also built the <strong>knowledge base, cross-functional partnerships (Security, IT, Legal), and repeatable process</strong> for the rest of the SE team — because I was already the one running those calls, and I wanted the motion documented.</li>
-                  <li>Problem solving is in my DNA (to borrow the JD phrase). I love the late-stage deal where the SE has to walk into a skeptical security review, align on the architecture, and unblock the close.</li>
+                  <li>At SOCi I also built the <strong>knowledge base, cross-functional partnerships (Security, IT, Legal), and repeatable process</strong> for the rest of the SE team.</li>
                 </ul>
               </div>
             </div>
@@ -1407,11 +1402,11 @@
                 <span class="match-badge">✓ Strong match</span>
               </div>
               <div class="card-body">
-                <p>I've personally guided enterprise buyers through end-to-end evaluations across a decade: discovery → demo → POC / pilot → security review → technical decision → close. This is the craft I want to run at Slack scale.</p>
+                <p>I've personally guided enterprise buyers through end-to-end evaluations across a decade: discovery → demo → POC / pilot → security review → technical decision → close.</p>
                 <ul>
-                  <li>I build <strong>tailored solution designs</strong> and written proposals that do the work for my buyer — mapping product capability to their stated business objectives, so my champion can carry the case internally when I'm not in the room.</li>
+                  <li>I build <strong>tailored solution designs</strong> that do the work for my buyer — mapping product capability to their stated business objectives, so my champion can carry the case internally when I'm not in the room.</li>
                   <li>POC / pilot design: clear success criteria up front, checkpoints along the way, and a technical decision framework the buyer can defend to their committee.</li>
-                  <li>I redesigned the <strong>RFP workflow</strong> at SOCi (with Loopio) because I was the SE answering the most RFPs — measurable lift in quality and turnaround time.</li>
+                  <li>I used my SE experience to redesign the <strong>RFP workflow</strong> at SOCi, eliminating bottlenecks and improving quality.</li>
                   <li>As a former marketing leader, I know what it feels like to be the buyer under pressure to deliver ROI on a new tool. That empathy shows up in every evaluation I run.</li>
                 </ul>
               </div>
@@ -1426,11 +1421,11 @@
                 <span class="match-badge">✓ Strong match</span>
               </div>
               <div class="card-body">
-                <p>I've lived inside two hypergrowth SE orgs as an IC. I know what the motion feels like from the front line — the pace, the rep count, the constant territory and product shifts, and the need to self-orient when the org is changing under you.</p>
+                <p>I've lived inside two hypergrowth SE orgs. I know what the motion feels like from the front line — the pace, the rep count, the constant territory, AE, and product shifts.</p>
                 <ul>
                   <li>At Sprout Social (pre-IPO → $200M ARR), I joined as an Enterprise SE and grew into Lead SE through the IPO — <strong>President's Club</strong>, multiple <strong>Enterprise Team MVPs</strong>, and in the trenches of a category-defining run.</li>
                   <li>A steadying hand in chaos — that's the phrase peers and managers have used to describe me across ten years of enterprise SE work.</li>
-                  <li>And because I've also led SE orgs, I know how the Slack org is likely thinking about enablement, tooling, and process. I can plug in fast, find the gaps as I hit them in my own deals, and help the org level up — without waiting to be asked.</li>
+                  <li>And because I've also led SE orgs, I know how the Slack org is likely thinking about enablement, tooling, and process. I can plug in fast, find the gaps as I hit them in my own deals, and proactively help the org level up.</li>
                 </ul>
               </div>
             </div>
@@ -1446,8 +1441,8 @@
               <div class="card-body">
                 <p>This is an area where I'm differentiated — I spent <strong>four years in corporate marketing leadership</strong> (Director of Marketing at IRIO, Sr. Manager of Marketing Strategy at GuideStone) before moving into presales. I speak all three dialects natively.</p>
                 <ul>
-                  <li>At Sprout I built the presales-to-product feedback loop with our PM team so demo-floor signal — the unasked question, the missed capability, the near-miss on a deal — turned into real backlog items.</li>
-                  <li>At SOCi I was hands-on in the launch of the company's <strong>first agentic AI product</strong>, working directly with Product and Marketing to shape the story and the enablement so the SE team could sell it on day one.</li>
+                  <li>At SOCi I built the presales-to-product feedback loop with Product and Engineering leaders so demo-floor signal turned into real-time, usable product feedback.</li>
+                  <li>I was hands-on in the launch of SOCi's <strong>first agentic AI products</strong>, working directly with Product, Marketing, and Sales leaders to shape the story and enable the SE team.</li>
                   <li>I take the liaison role seriously because the SE is the closest the product team has to the customer without being in the room. That's a responsibility — not a side project.</li>
                 </ul>
               </div>
@@ -1462,13 +1457,12 @@
                 <span class="match-badge">✓ Strong match · Differentiator</span>
               </div>
               <div class="card-body">
-                <p>This is the dimension most IC candidates won't bring — and it's explicitly in the JD for the Principal title.</p>
+                <p>I have been leading the way here as both an IC and leader for nearly a decade.</p>
                 <ul>
-                  <li>Four years of SE leadership at SOCi, including developing emerging leaders <strong>into managers themselves</strong> — but the core of my career is ten years of enterprise SE craft.</li>
-                  <li>Built onboarding, career pathing, and demo certification — so coaching is a process I can run, not just a vibe.</li>
                   <li>My leadership background is a <strong>force multiplier</strong>, not a distraction. The IC work is the headline. But on deal reviews, ride-alongs, enablement, and onboarding, I can contribute beyond my own pipeline — without taking time from the deals I'm hired to win.</li>
+                  <li>Four years of SE leadership at SOCi, including developing emerging leaders <strong>into managers themselves</strong>.</li>
+                  <li>Built onboarding, career pathing, and demo certification — so coaching is a process I can run, not just a vibe.</li>
                 </ul>
-                <div class="callout">Pipeline first. Force multiplier second. Both.</div>
               </div>
             </div>
 
@@ -1511,7 +1505,7 @@
       <div class="channel-header">
         <div class="chan-main">
           <div class="chan-title"><span class="hash">#</span>why-slack<span class="caret">▾</span></div>
-          <div class="chan-topic">Why Slack. Why now. Why I'm stepping back from leadership to live the motion again.</div>
+          <div class="chan-topic">Why Slack. Why now.</div>
         </div>
         <div class="chan-actions">
           <button class="huddle-btn" aria-label="Start huddle">
@@ -1534,7 +1528,7 @@
       </div>
       <div class="pinned-banner">
         <span class="pin-icon">📌</span>
-        <span><strong>3 pinned messages</strong> — the answers I'd lead with in a first conversation</span>
+        <span><strong>2 pinned messages</strong></span>
       </div>
       <div class="messages" id="msgs-why-slack">
         <div class="day-divider"><span class="chip">Pinned thread</span></div>
@@ -1552,8 +1546,8 @@
               <div class="rich-block">
                 <h3><span class="pin">📌</span> Why Slack?</h3>
                 <p>Slack is positioning itself as the <strong>Agentic OS for the enterprise</strong> — the operating system where people, data, apps, and AI agents all work together in one place. The timing matters because most companies are stuck in an early AI pattern right now: they've handed employees access to an LLM or two and told them to find efficiencies. Adoption is inconsistent. Value is fragmented.</p>
-                <p>What Slack solves is the <strong>coordination problem</strong>. Employees already live here. Instead of switching between tools and figuring out which AI does what, they have a conversation — and Slack routes to the right agent, takes the right action, and brings it back into a single thread. No coding. No learning curve. And it runs within the permissions and data boundaries the organization already has in place.</p>
-                <p>Agentic AI — AI that takes action toward goals, not just answers questions — is ready for the enterprise. Slack is positioning itself as where that shift actually <em>lands</em> for every employee, not just the technical ones. That's the story I want to be telling.</p>
+                <p>Slack solves the adoption and coordination problem. Employees already live here. Instead of switching between tools and figuring out which AI does what. It's a conversation. Slack routes to the right agent, takes the right action, and brings it back into a single thread. No coding. No learning curve. And it runs within the permissions and data boundaries the organization already has in place.</p>
+                <p>Agentic AI — AI that takes action, not just answers questions — is ready for the enterprise. Slack is positioning itself as where that shift actually <em>lands</em> for every employee, not just the technical ones. <strong>That's the story I want to be telling.</strong></p>
               </div>
             </div>
             <div class="reactions">
@@ -1576,40 +1570,14 @@
             <div class="text">
               <div class="rich-block">
                 <h3><span class="pin">📌</span> Why step back to an IC role?</h3>
-                <p>My foundation is as an individual contributor. I spent five years as an Enterprise SE and Lead SE at Sprout Social through the IPO and the run to $200M ARR — President's Club, multiple Enterprise Team MVPs, and the deals to back it up. That's the motion I love and the motion I want to be running again at Slack.</p>
-                <p>I spent the last four years leading SE teams at SOCi. That experience sharpened me: I've seen what separates good SEs from great ones, and I know how to plug into a team without friction. But the part of the work I'm best at — and most energized by — is running complex enterprise deals.</p>
-                <p>AI is the biggest platform shift I've seen in my career, and I've been through several. I want to earn my expertise at the front lines before I lead others through it. And Slack is where I want to do that: the Agentic OS vision, the Salesforce integration, the scale of what's being built here. I want to be <em>inside</em> that inflection point, not watching it from a leadership remove.</p>
-                <p>And candidly — my leadership background isn't something I'm setting aside. The JD calls for mentoring SEs and coaching account teams. <strong>I can contribute beyond my own pipeline.</strong> That's a dimension most IC candidates won't bring.</p>
+                <p>My foundation is as an individual contributor. I spent five years as an Enterprise SE and Lead SE at Sprout Social through the run to $200M ARR and IPO — President's Club, multiple Enterprise Team MVPs, and the deals to back it up. That's the motion I love and the motion I want to be running again at Slack.</p>
+                <p>I spent the last four years leading SE teams at SOCi. And my leadership background isn't something I'm setting aside. I've seen what separates good SEs from great ones. The JD calls for mentoring SEs and coaching account teams, which I've done before as a Lead SE and as a presales leader. <strong>I can contribute beyond my own pipeline.</strong></p>
+                <p>AI is the biggest platform shift I've seen in my career, and I've been through several. I want to earn my expertise at the front lines before I lead others through it. And Slack is where I want to do that: the Agentic OS vision, the Salesforce integration, the scale of what's being built here. I want to be <em>inside</em> that inflection point.</p>
               </div>
             </div>
             <div class="reactions">
               <span class="reaction mine"><span class="emo">💪</span> 4</span>
               <span class="reaction"><span class="emo">🙌</span> 2</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Why now -->
-        <div class="msg">
-          <div class="avatar you"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</div>
-          <div class="msg-body">
-            <div class="header">
-              <span class="name">Cody Cornett</span>
-              <span class="time">10:18 AM</span>
-              <span class="time">📌 pinned</span>
-            </div>
-            <div class="text">
-              <div class="rich-block">
-                <h3><span class="pin">📌</span> Why now?</h3>
-                <p>Three forces are converging, and the window is open right now:</p>
-                <p><strong>1. Agentic AI is production-ready.</strong> The Slackbot relaunch in January 2026 turned a personal assistant into an orchestration layer across 2,600+ connected apps. That's not a demo — that's shipped enterprise capability.</p>
-                <p><strong>2. Enterprise buyers are ready.</strong> The first wave of AI experimentation has matured into a real procurement conversation: "where does this land for every employee?" Slack is a natural answer to that question because employees already live there.</p>
-                <p><strong>3. The SE motion needs translators.</strong> The bottleneck for most customers isn't capability — it's making the story land across IT, Security, and the business. That's the work I want to do.</p>
-              </div>
-            </div>
-            <div class="reactions">
-              <span class="reaction"><span class="emo">⚡</span> 3</span>
-              <span class="reaction"><span class="emo">🧭</span> 2</span>
             </div>
           </div>
         </div>
@@ -1673,26 +1641,26 @@
               <span class="time">11:04 AM</span>
             </div>
             <div class="text">
-              <p>The short version. Each stat is tied to a story I'm happy to go deep on in an interview.</p>
+              <p>The short version.</p>
               <div class="stats-grid">
                 <div class="stat-card yellow">
-                  <div class="stat-label">Sprout Social · IC honor</div>
+                  <div class="stat-label">Sprout Social · SE honor</div>
                   <div class="stat-value">President's Club</div>
                   <div class="stat-sub">Recognized as a top-performing Enterprise SE partnered with AEs on the company's largest strategic opportunities.</div>
                 </div>
                 <div class="stat-card red">
-                  <div class="stat-label">Sprout Social · IC honor</div>
+                  <div class="stat-label">Sprout Social · SE honor</div>
                   <div class="stat-value">Enterprise Team MVPs</div>
-                  <div class="stat-sub">Multiple-time MVP on the Enterprise team — the SE peers and AEs wanted on their biggest deals.</div>
+                  <div class="stat-sub">Multiple-time MVP on the Enterprise team.</div>
                 </div>
                 <div class="stat-card purple">
-                  <div class="stat-label">ARR run — as an IC SE</div>
+                  <div class="stat-label">ARR run</div>
                   <div class="stat-value">$30M → $200M</div>
                   <div class="stat-sub">Joined Sprout pre-IPO as an Enterprise SE, grew into Lead SE through IPO and the run to $200M ARR.</div>
                 </div>
                 <div class="stat-card blue">
                   <div class="stat-label">Enterprise SE craft</div>
-                  <div class="stat-value">10+ years</div>
+                  <div class="stat-value">10 years</div>
                   <div class="stat-sub">A decade of enterprise SE work — discovery, demo, POC, security review, close. The motion I'm best at.</div>
                 </div>
                 <div class="stat-card green">
@@ -1727,7 +1695,7 @@
               <div class="rich-block">
                 <h3>📘 Sprout Social · 2016 — 2021 · 5 years as an IC SE</h3>
                 <p><strong>Enterprise SE → Senior SE → Lead SE.</strong> Joined pre-IPO as an Enterprise SE and grew through the IPO and the climb past $200M ARR.</p>
-                <p>This is where my craft was built — and where my honors stack up: <strong>President's Club</strong>, multiple <strong>Enterprise Team MVPs</strong>, top contributor in ARR, win rate, and average deal size. I was the SE AEs asked for on their most strategic, most technical, most security-scrutinized accounts.</p>
+                <p>This is where my craft was built — and where my honors stack up: <strong>President's Club</strong>, multiple <strong>Enterprise Team MVPs</strong>, a top contributor in ARR, win rate, and average deal size.</p>
                 <p>Deep discovery, tailored demos, long-cycle enterprise deals across regulated industries — the exact motion the Principal Slack SE role is asking for.</p>
               </div>
             </div>
@@ -1746,9 +1714,8 @@
               <div class="rich-block">
                 <h3>🏢 SOCi · 2021 — 2025 · Player-coach SE leader</h3>
                 <p><strong>Associate Director → Director → Sr. Director, Solutions Engineering.</strong> Led SE through SOCi's climb from $30M to $100M+ ARR — and stayed close to the craft the whole way.</p>
-                <p>I was a <strong>player-coach</strong>. I personally ran the most complex deals, owned the hardest security and architecture conversations, and designed the tailored solution narratives for the largest strategic accounts. That's where the <strong>+96% SE-driven win rate lift</strong> and the refined discovery, demo, and RFP processes came from — I built the motion by running it myself first, then documenting it for the team.</p>
+                <p>I was a <strong>player-coach</strong> early. I personally ran complex deals, owned difficult security and architecture conversations, and designed tailored solution narratives for strategic accounts. That's where the <strong>+96% SE-driven win rate lift</strong> and the refined discovery, demo, and RFP processes came from — I built the motion by running it myself first, then documenting it for the team.</p>
                 <p>Hands-on in the launch of SOCi's <strong>first agentic AI product</strong>, working cross-functionally with Product and Marketing on the story and enablement.</p>
-                <p>I'm leaving SOCi because I want the next chapter of my career to be on the front lines of enterprise AI, not running a team that's running that motion without me.</p>
               </div>
             </div>
           </div>
@@ -1781,7 +1748,7 @@
       <div class="channel-header">
         <div class="chan-main">
           <div class="chan-title"><span class="hash">#</span>ai-fluency<span class="caret">▾</span></div>
-          <div class="chan-topic">Proof I can hold the technical conversation with a modern IT buyer about Slackbot, RAG, and agents.</div>
+          <div class="chan-topic">Personal AI experience, and topics I feel it's critical to communicate clearly.</div>
         </div>
         <div class="chan-actions">
           <button class="huddle-btn" aria-label="Start huddle">
@@ -1813,7 +1780,7 @@
               <span class="time">1:22 PM</span>
             </div>
             <div class="text">
-              <p>A few things I'd want to be able to explain cleanly on day one — and that I can today. These are the conversations that separate SEs who can hold the room from SEs who can't.</p>
+              <p>A few things I'd want to be able to explain cleanly on day one — and that I can today.</p>
             </div>
           </div>
         </div>
@@ -1829,33 +1796,14 @@
             <div class="text">
               <div class="rich-block">
                 <h3>🤖 What is the new Slackbot, actually?</h3>
-                <p>The original Slackbot was essentially a notification system — reminders, automated messages, basic help responses. Useful, but not transformative. What Salesforce launched in January 2026 is a completely different product that kept the familiar name.</p>
-                <p>The new Slackbot is a <strong>personal AI agent</strong> built natively into Slack for every employee — powered by <strong>Anthropic's Claude</strong>, with no setup, no installation, no training required. What makes it different from other AI tools is <strong>context</strong>. Most AI assistants start from zero every time you use them. Slackbot already knows who you are, what you're working on, and what decisions have been made — because it lives inside Slack, where your work actually happens, and only sees what you're already permissioned to see.</p>
+                <p>The original Slackbot was essentially a notification system — reminders, automated messages, basic help responses. The new Slackbot is a <strong>personal AI agent</strong> built natively into Slack for every employee — powered by <strong>Anthropic's Claude</strong>, with no setup, no installation, no training required.</p>
+                <p>What makes it different from other AI tools is <strong>context</strong>. Most AI assistants start from zero every time you use them. Slackbot already knows who you are, what you're working on, and what decisions have been made — because it lives inside Slack, where your work actually happens, and only sees what you're already permissioned to see.</p>
                 <p>It can draft emails, schedule meetings, summarize threads, transcribe calls, analyze documents, and execute multi-step workflows across <strong>2,600+ connected apps</strong>. Beyond personal productivity, it's becoming the <strong>orchestration layer for the entire agent ecosystem</strong> — employees don't need to know which agent handles sales vs. HR vs. IT. They tell Slackbot what they need and it routes.</p>
               </div>
             </div>
             <div class="reactions">
               <span class="reaction"><span class="emo">🧠</span> 2</span>
               <span class="reaction"><span class="emo">🤖</span> 2</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- RAG -->
-        <div class="msg">
-          <div class="avatar you"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</div>
-          <div class="msg-body">
-            <div class="header">
-              <span class="name">Cody Cornett</span>
-              <span class="time">1:28 PM</span>
-            </div>
-            <div class="text">
-              <div class="rich-block">
-                <h3>📚 How Slack gathers company context (and why that matters to IT)</h3>
-                <p>The mechanism is <strong>RAG — Retrieval Augmented Generation</strong>. Rather than relying on what the model memorized during training (generic and potentially outdated), RAG retrieves the most relevant information from the company's actual business data in real time and uses that as context for every response. That's what eliminates hallucination and keeps answers specific.</p>
-                <p>In Salesforce's case, that retrieval layer is <strong>Data Cloud</strong>. Data Cloud ingests and indexes both structured data (CRM records, opportunity history) and unstructured data (Slack conversations, emails, call transcripts, documents). It chunks the content, converts it into <strong>vector embeddings for semantic search</strong>, and makes it retrievable in milliseconds.</p>
-                <p>Critically — it runs within the <strong>permissions architecture</strong> already in place. Slackbot only surfaces information the employee is already authorized to see. You get the intelligence of enterprise AI without the data governance risk IT is worried about.</p>
-              </div>
             </div>
           </div>
         </div>
@@ -1872,10 +1820,11 @@
               <div class="rich-block">
                 <h3>🛠️ My personal AI toolkit (what I use every day)</h3>
                 <p><strong>Daily drivers:</strong> Claude, ChatGPT, Gemini — across ideation, research, writing, and code.</p>
-                <p><strong>Concepts I'm fluent in:</strong> <code>MCP</code> (Model Context Protocol), <code>RAG</code>, knowledge graphs, agents vs. assistants, <code>APIs</code>, <code>SSO</code>, and user lifecycle management — all the surface area an SE needs to navigate an IT architecture conversation.</p>
-                <p><strong>Formal learning:</strong> Completed <strong>Claude Code in Action (Anthropic Academy)</strong>, among other coursework. Demo2Win, Great Demo!, Speechless POINT, PreSales Collective Technical Enablement, SOAR Sales Training.</p>
-                <p><strong>Proof of use:</strong> <em>This page.</em> Built with Claude in a single Cowork session. See <a href="#" onclick="switchChannel('proof-of-craft'); return false;">#proof-of-craft</a>.</p>
+                <p><strong>Concepts I'm fluent in:</strong> <code>MCP</code> (Model Context Protocol), <code>RAG</code>, knowledge graphs, agents vs. assistants, <code>APIs</code>, <code>SSO</code>, and user lifecycle management — surface area an SE needs to navigate an IT architecture conversation.</p>
+                <p><strong>Continuous Learning:</strong> Completed numerous Anthropic Academy courses, including AI Fluency, and Claude Code in Action, among other coursework. Follow thought leader AI podcasts like AI Daily Brief and Hard Fork AI for daily news, changes, releases, ideas, and tips. Built a personal trainer for AI growth using Claude — tailored to my learning style.</p>
+                <p><strong>Proof of use:</strong> <em>This page.</em> Built with Claude to replicate a live Slack instance. A PDF resume tells you what I've done. This page demonstrates how I think and work with modern tools.</p>
               </div>
+              <div class="callout">If that's the kind of creative problem solving you'd want on the team when a customer says "show me what Slack could do for our kickoff week" — I'd love to keep talking.</div>
             </div>
             <div class="reactions">
               <span class="reaction mine"><span class="emo">🛠️</span> 2</span>
@@ -1906,82 +1855,6 @@
       </div>
     </section>
 
-    <!-- ========== PROOF OF CRAFT ========== -->
-    <section class="channel-view" data-channel="proof-of-craft" aria-label="proof-of-craft channel">
-      <div class="channel-header">
-        <div class="chan-main">
-          <div class="chan-title"><span class="hash">#</span>proof-of-craft<span class="caret">▾</span></div>
-          <div class="chan-topic">The page itself is the third demonstration. Here's what it took.</div>
-        </div>
-        <div class="chan-actions">
-          <button class="huddle-btn" aria-label="Start huddle">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v-3a9 9 0 0 1 18 0v3"/><path d="M21 16v1a2 2 0 0 1-2 2h-1v-5h1a2 2 0 0 1 2 2zM3 16v1a2 2 0 0 0 2 2h1v-5H5a2 2 0 0 0-2 2z"/></svg>
-            Huddle
-            <span class="huddle-caret">▾</span>
-          </button>
-          <button class="member-btn" aria-label="3 members">
-            <span class="members-stack">
-              <span class="m" style="background:linear-gradient(135deg,#4A154B,#611F69);"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</span>
-              <span class="m" style="background:linear-gradient(135deg,#007A5A,#36C5F0);">HM</span>
-              <span class="m" style="background:linear-gradient(135deg,#ECB22E,#E01E5A);">🫱</span>
-            </span>
-            <span>3</span>
-          </button>
-          <button class="canvas-btn" aria-label="Canvas">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg>
-          </button>
-        </div>
-      </div>
-      <div class="messages" id="msgs-craft">
-        <div class="day-divider"><span class="chip">Meta-demonstration</span></div>
-
-        <div class="msg">
-          <div class="avatar you"><img src="cody.jpg" alt="" onerror="this.remove()"/>CC</div>
-          <div class="msg-body">
-            <div class="header">
-              <span class="name">Cody Cornett</span>
-              <span class="time">2:10 PM</span>
-            </div>
-            <div class="text">
-              <p>A PDF resume would tell you what I've done. This page demonstrates how I think and what I can do with modern tools.</p>
-              <div class="rich-block">
-                <h3>🧪 The three things this page is meant to prove</h3>
-                <p><strong>1. I understand what success looks like in this role.</strong> The #role-fit channel is a requirement-by-requirement scorecard — which is the same structure I'd want to see from an SE who's done their homework on a complex deal.</p>
-                <p><strong>2. My experience is the right fit.</strong> Every claim on the scorecard is grounded in the same resume I'd hand you in PDF — just presented where you can actually engage with the parts that matter to you.</p>
-                <p><strong>3. I'm technically capable with AI.</strong> This single-file HTML experience was designed, written, and built in one Cowork session with Claude. Not a template, not a site builder — just clear direction, iterative prompting, and a working knowledge of what looks credible.</p>
-              </div>
-              <div class="callout">If that's the kind of creative problem solving you'd want on the team when a customer says "show me what Slack could do for our kickoff week" — I'd love to keep talking.</div>
-            </div>
-            <div class="reactions">
-              <span class="reaction"><span class="emo">💡</span> 2</span>
-              <span class="reaction"><span class="emo">🎯</span> 2</span>
-              <span class="reaction"><span class="emo">🟠</span> 1</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <div class="composer">
-        <div class="box">
-          <div class="compose-input"><span class="hint">Message #proof-of-craft</span></div>
-          <div class="action-bar">
-            <div class="left">
-              <span class="ai" title="Add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-              <span class="ai" title="Video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></span>
-              <span class="ai" title="Audio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
-            </div>
-            <div class="right">
-              <span class="ai" title="Emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span>
-              <span class="ai" title="Mention">@</span>
-              <span class="ai" title="Formatting" style="font-weight:900;">Aa</span>
-              <span class="send" title="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></span>
-              <span class="send-caret">▾</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- ========== DM ========== -->
     <section class="channel-view" data-channel="dm-cody" aria-label="direct message with Cody">
       <div class="channel-header">
@@ -1993,7 +1866,7 @@
               <span class="caret">▾</span>
             </span>
           </div>
-          <div class="chan-topic">Direct message · Dallas, TX · Open to conversation</div>
+          <div class="chan-topic">Direct message · Open to conversation</div>
         </div>
         <div class="chan-actions">
           <button class="huddle-btn" aria-label="Start huddle">
@@ -2042,13 +1915,6 @@
                     <div class="value">linkedin.com/in/codycornett</div>
                   </span>
                 </a>
-                <div class="row">
-                  <span class="ico">📍</span>
-                  <span>
-                    <div class="label">Location</div>
-                    <div class="value">Dallas, TX · Open to hybrid/remote</div>
-                  </span>
-                </div>
               </div>
               <div class="callout">I'll bring the same consultative discovery-first approach to our first conversation that I'd bring to a Slack customer. Looking forward to meeting the team.</div>
             </div>
@@ -2129,11 +1995,10 @@
   // Channel display map for mobile topbar (name + subtitle)
   const CHANNEL_META = {
     'welcome':        { name: 'welcome',        hash: true,  sub: 'Start here — a 30-second tour' },
-    'role-fit':       { name: 'role-fit',       hash: true,  sub: 'Every JD requirement × receipts' },
+    'role-fit':       { name: 'role-fit',       hash: true,  sub: 'JD requirements × receipts' },
     'why-slack':      { name: 'why-slack',      hash: true,  sub: "Why Slack, why now, why IC" },
     'track-record':   { name: 'track-record',   hash: true,  sub: 'The numbers behind the story' },
     'ai-fluency':     { name: 'ai-fluency',     hash: true,  sub: 'Technical conversations in AI' },
-    'proof-of-craft': { name: 'proof-of-craft', hash: true,  sub: 'How this page was built' },
     'dm-cody':        { name: 'Cody Cornett',   hash: false, sub: 'Direct message' }
   };
 
